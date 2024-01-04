@@ -75,8 +75,19 @@ Latest version of Pojo-Collector Framework
 ```
 
 #### Gradle Plugin: Publish to gradle-plugin repository
-TODO
-
+The documentation of the process can be found here
+```text
+https://docs.gradle.org/current/userguide/publishing_gradle_plugins.html
+```
+First of all we need to create an account at
+```text
+https://plugins.gradle.org
+```
+which can be done by login via github.
+Afterwards we have already an API Key and secret which can be used to directly publish the plugin via following command
+```shell
+./gradlew publishPlugins -Pgradle.publish.key=<key> -Pgradle.publish.secret=<secret>
+```
 #### Release
 After the artifacts are published, we should release the artifacts to github. This can be done by running the following 
 task
