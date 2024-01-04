@@ -1,0 +1,64 @@
+package io.github.lumpytales.poco;
+
+import jakarta.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
+import lombok.Getter;
+
+/**
+ * used to generate the collector {@link java.util.function.Function} and {@link CollectorContext} classes
+ */
+@Getter
+public class CollectorGeneratorParams {
+    /** where to collect from */
+    private final Class<?> baseClass;
+
+    /** the package name which should be used for the collector {@link java.util.function.Function} */
+    private final String outputPackageName;
+
+    /** classes which should be collected. If unset, it will generate a collector {@link java.util.function.Function} for all nested classes of the base class */
+    @Nullable private List<Class<?>> classesToCollect;
+
+    /** usually only collector classes are generated for classes which exists in the same package as the base class.
+     * Here we can add additional package names or even full qualified class names. */
+    @Nullable private List<String> additionalPackageOrClassNames;
+
+    /**
+     * constructor
+     * @param baseClass to collect from
+     * @param outputPackageName the package name which should be used for the collector {@link java.util.function.Function}
+     * @throws IllegalArgumentException in case that a parameter is unset
+     */
+    public CollectorGeneratorParams(final Class<?> baseClass, final String outputPackageName) {
+        if (baseClass == null) {
+            throw new IllegalArgumentException(
+                    "Parameter baseClass and outputPackageName are mandatory!");
+        }
+        if (outputPackageName == null) {
+            throw new IllegalArgumentException("Parameter outputPackageName is mandatory!");
+        }
+        this.baseClass = baseClass;
+        this.outputPackageName = outputPackageName;
+    }
+
+    /**
+     * Define which classes should be collected
+     * @param classesToCollect {@code null} or a non-modifiable list of classes to collect
+     */
+    public void setClassesToCollect(@Nullable List<Class<?>> classesToCollect) {
+        this.classesToCollect =
+                classesToCollect != null ? Collections.unmodifiableList(classesToCollect) : null;
+    }
+
+    /**
+     * Define which additional package names or classes should be taken into account
+     * @param additionalPackageOrClassNames {@code null} or a non-modifiable list of additional package or class names
+     */
+    public void setAdditionalPackageOrClassNames(
+            @Nullable List<String> additionalPackageOrClassNames) {
+        this.additionalPackageOrClassNames =
+                additionalPackageOrClassNames != null
+                        ? Collections.unmodifiableList(additionalPackageOrClassNames)
+                        : null;
+    }
+}

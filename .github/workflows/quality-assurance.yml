@@ -1,0 +1,169 @@
+name: Template - Quality Assurance
+on:
+  workflow_call:
+    inputs:
+      project:
+        required: true
+        type: string
+
+jobs:
+  linter:
+    name: Check format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - uses: gradle/gradle-build-action@v2
+
+      - name: Check format
+        run: ./gradlew :${{ inputs.project }}:spotlessCheck > linter-result.txt
+
+      - name: Upload Linter Result
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Linter result
+          path: linter-result.txt
+
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - uses: gradle/gradle-build-action@v2
+
+      - name: Build and Run Tests
+        run: ./gradlew :${{ inputs.project }}:test
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Test Report
+          path: ${{ inputs.project }}/build/test-results/test/*.xml
+          reporter: java-junit
+
+      - name: Coverage Report
+        if: always()
+        id: jacoco
+        uses: PavanMudigonda/jacoco-reporter@v4.9
+        with:
+          coverage_results_path: ${{ inputs.project }}/build/reports/jacoco/test/jacocoTestReport.xml
+          coverage_report_name: Coverage
+          coverage_report_title: Coverage Report
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          skip_check_run: false
+          minimum_coverage: 90
+          fail_below_threshold: true
+          publish_only_summary: false
+
+  dependency-check:
+    name: Check dependency vulnerabilities
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - uses: gradle/gradle-build-action@v2
+
+      - name: Build and Run Tests
+        run: ./gradlew :${{ inputs.project }}:dependencyCheckAnalyze
+
+      - name: Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        id: depcheck
+        env:
+          JAVA_HOME: /opt/jdk
+        with:
+          project: 'LumpyTales/poco'
+          path: '.'
+          format: 'HTML'
+          out: 'reports' # this is the default, no need to specify unless you wish to override it
+          args: >
+            --failOnCVSS 7
+            --enableRetired
+
+      - name: Dependency Check Report
+        uses: actions/upload-artifact@master
+        with:
+          name: Dependencies Report
+          path: ${{github.workspace}}/reports
+
+  pmd:
+    name: Run static code analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - uses: gradle/gradle-build-action@v2
+
+      - name: PMD
+        run: ./gradlew :${{ inputs.project }}:pmdMain :${{ inputs.project }}:pmdTest
+
+      - name: PMD Report
+        uses: lcollins/pmd-github-action@v2.0.0
+        with:
+          title: PMD Report
+          path: '${{ inputs.project }}/build/reports/pmd/*.xml'
+
+  spotbugs:
+    name: Check bugs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - uses: gradle/gradle-build-action@v2
+
+      - name: Spotbugs
+        run: ./gradlew :${{ inputs.project }}:spotbugsMain :${{ inputs.project }}:spotbugsTest
+
+      - name: Spotbugs Report
+        id: spotbugs-main
+        if: always()
+        uses: lcollins/spotbugs-github-action@v2.0.0
+        with:
+          title: Spotbugs Report
+          path: '${{ inputs.project }}/build/reports/spotbugs/*.xml'

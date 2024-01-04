@@ -1,0 +1,17 @@
+name: Quality Assurance - Gradle Plugin
+run-name: Gradle Plugin - Quality assurance on '${{ github.actor }}' commit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'gradle-plugin/**'
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  qa-core:
+    uses: ./.github/workflows/quality-assurance.yml
+    with:
+      project: 'gradle-plugin'

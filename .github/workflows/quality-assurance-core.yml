@@ -1,0 +1,17 @@
+name: Quality Assurance - Core
+run-name: Core - Quality assurance on '${{ github.actor }}' commit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'core/**'
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  qa-core:
+    uses: ./.github/workflows/quality-assurance.yml
+    with:
+      project: 'core'
