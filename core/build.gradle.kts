@@ -47,6 +47,12 @@ dependencies {
 // PUBLISHING ----------------------------------------------------------
 
 publishing {
+    repositories {
+        maven {
+            name = "2local"
+            url = uri("../poco-repository")
+        }
+    }
     publications {
         create<MavenPublication>("maven") {
             groupId = project.group.toString()
@@ -70,8 +76,7 @@ publishing {
 
 signing {
     useGpgCmd()
-    //sign(publishing.publications["maven"])
-    sign(configurations.runtimeElements.get())
+    sign(publishing.publications["maven"])
 }
 
 

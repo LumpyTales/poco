@@ -27,3 +27,4 @@
 **/.idea/
 **/build/
 !gradle/wrapper/*
+/poco-repository/

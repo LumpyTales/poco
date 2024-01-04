@@ -54,6 +54,17 @@ dependencies {
 
 }
 
+// PUBLISHING ----------------------------------------------------------
+
+publishing {
+    repositories {
+        maven {
+            name = "2local"
+            url = uri("../poco-repository")
+        }
+    }
+}
+
 // LINTING -------------------------------------------------------------
 
 spotless {
