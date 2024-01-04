@@ -1,6 +1,8 @@
 name: Quality Assurance - Gradle Plugin
 run-name: Gradle Plugin - Quality assurance on '${{ github.actor }}' commit
 on:
+  schedule:
+    - cron:  '0 2 * * *' # every night 2 am
   workflow_dispatch:
   push:
     paths:

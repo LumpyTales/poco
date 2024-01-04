@@ -4,7 +4,6 @@ plugins {
     id("com.gradle.plugin-publish") version "1.2.1"
     id("com.github.spotbugs") version "6.0.4"
     id("com.diffplug.spotless") version "6.23.3"
-    id("org.owasp.dependencycheck") version "9.0.7"
 }
 
 java {
@@ -110,14 +109,6 @@ tasks.javadoc {
 }
 
 // QUALITY ASSURANCE CONFIG -------------------------------------------
-val nvdApiKey = System.getenv("NVD_API_KEY") ?: project.findProperty("nvd.apiKey")?.toString()
-dependencyCheck {
-    format = "JSON"
-    failBuildOnCVSS = 7F
-    nvd.apiKey = nvdApiKey
-    nvd.maxRetryCount = 10
-}
-
 tasks.withType<Checkstyle>().configureEach {
     reports {
         xml.required = true
