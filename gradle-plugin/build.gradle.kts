@@ -92,12 +92,6 @@ tasks.jacocoTestReport {
         csv.required = true
     }
     dependsOn(tasks.test)
-
-    classDirectories.setFrom(classDirectories.files.map {
-        fileTree(it).matching {
-            exclude(listOf("**/*Task.*"))
-        }
-    })
 }
 
 // JAVADOC ------------------------------------------------------------

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.UnknownDomainObjectException;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.plugins.JavaPluginExtension;
@@ -27,12 +28,15 @@ public abstract class PocoGenerator extends DefaultTask {
 
     /** action to generate the collector classes */
     @Getter(AccessLevel.PRIVATE)
-    private final PocoGeneratorAction action = new PocoGeneratorAction();
+    private final PocoGeneratorAction defaultAction = new PocoGeneratorAction();
 
     /** the directory where the classes are generated */
     @Getter(AccessLevel.PRIVATE)
     private final Directory genDirectory =
             getProject().getLayout().getBuildDirectory().dir("generated-poco").get();
+
+    /** action to generate the collector classes */
+    abstract Property<PocoGeneratorAction> getAction();
 
     /** fully qualified name of the class where to collect from */
     @Input
@@ -91,6 +95,7 @@ public abstract class PocoGenerator extends DefaultTask {
             }
         }
 
+        final var action = getAction().getOrElse(getDefaultAction());
         action.generate(
                 baseClass,
                 getOutputPackageName().getOrNull(),
@@ -102,9 +107,13 @@ public abstract class PocoGenerator extends DefaultTask {
 
     private ClassLoader createClassLoader() throws TaskExecutionException {
         final var urls = new ArrayList<URL>();
-        final var sourceSets =
-                getProject().getExtensions().getByType(JavaPluginExtension.class).getSourceSets();
         try {
+            final var sourceSets =
+                    getProject()
+                            .getExtensions()
+                            .getByType(JavaPluginExtension.class)
+                            .getSourceSets();
+
             for (var sourceSet : sourceSets) {
                 for (var file : sourceSet.getCompileClasspath()) {
                     urls.add(file.toURI().toURL());
@@ -113,7 +122,7 @@ public abstract class PocoGenerator extends DefaultTask {
                     urls.add(classesDir.toURI().toURL());
                 }
             }
-        } catch (MalformedURLException e) {
+        } catch (UnknownDomainObjectException | MalformedURLException e) {
             throw new TaskExecutionException(this, e);
         }
         return new URLClassLoader(urls.toArray(new URL[0]), getClass().getClassLoader());
