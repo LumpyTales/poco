@@ -31,17 +31,30 @@ public class PocoGeneratorAction {
         this.generator = new CollectorGenerator();
     }
 
+    /**
+     * delegate to {@link CollectorGenerator#generateFor(CollectorGeneratorParams)}
+     *
+     * @param baseClass where to collect from
+     * @param outputPackageName he package name which should be used for the collector
+     * @param classesToCollect classes which should be collected.
+     * @param additionalPackageOrClassNames additional package names or even full qualified class names
+     * @param generateContext whether to create the collector context or only the poco-classes
+     * @param directory where to write the generated collector classes
+     * @throws IOException in case collector classes cannot be created
+     */
     public void generate(
             final Class<?> baseClass,
             final String outputPackageName,
-            @Nullable List<Class<?>> classesToCollect,
-            @Nullable List<String> additionalPackageOrClassNames,
+            @Nullable final List<Class<?>> classesToCollect,
+            @Nullable final List<String> additionalPackageOrClassNames,
+            @Nullable final Boolean generateContext,
             final Directory directory)
             throws IOException {
 
         final var params = new CollectorGeneratorParams(baseClass, outputPackageName);
         params.setClassesToCollect(classesToCollect);
         params.setAdditionalPackageOrClassNames(additionalPackageOrClassNames);
+        params.setGenerateContext(generateContext);
 
         final var result = generator.generateFor(params);
 

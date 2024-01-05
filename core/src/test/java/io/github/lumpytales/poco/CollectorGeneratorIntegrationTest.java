@@ -16,10 +16,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class CollectorGeneratorIntegrationTest {
 
-    private static final String OUTPUT_PACKAGE_NAME = "io.github.lumpytales.poco";
     public static final String COLLECTOR_CONTEXT_IMPL_CLASS_NAME = "CollectorContextImpl";
-
+    private static final String OUTPUT_PACKAGE_NAME = "io.github.lumpytales.poco";
     private final CollectorGenerator cut = new CollectorGenerator();
+
+    private static String loadFixture(final String collectorFolder, final String collectorName)
+            throws IOException {
+
+        return Files.readString(Path.of(collectorFolder + collectorName + ".java"));
+    }
 
     @Test
     void When_base_class_has_no_nested_classes_of_same_package_Then_expect_no_classes()
@@ -89,6 +94,31 @@ class CollectorGeneratorIntegrationTest {
 
     @Test
     void
+            When_collector_context_creation_disabled_Then_expect_only_collector_classes_but_no_context()
+                    throws IOException {
+        // given
+        final var collectorFolder = "src/test/resources/fixtures/";
+        final var collectorContainerImplContent =
+                loadFixture(collectorFolder, COLLECTOR_CONTEXT_IMPL_CLASS_NAME);
+
+        final var cmd = new CollectorGeneratorParams(Order.class, OUTPUT_PACKAGE_NAME);
+        cmd.setGenerateContext(false);
+
+        // when
+        final var result = cut.generateFor(cmd);
+
+        // then
+        Assertions.assertThat(result)
+                .extracting(FileData::getName)
+                .doesNotContain(COLLECTOR_CONTEXT_IMPL_CLASS_NAME + ".java");
+
+        Assertions.assertThat(result)
+                .extracting(FileData::getContent)
+                .doesNotContain(collectorContainerImplContent);
+    }
+
+    @Test
+    void
             When_no_specific_collectors_selected_Then_expect_collectors_for_all_nested_classes_of_same_package()
                     throws IOException {
         // given
@@ -110,9 +140,6 @@ class CollectorGeneratorIntegrationTest {
                         "ProductCollector.java",
                         "TagCollector.java");
 
-        Files.writeString(
-                Path.of(collectorFolder + "/CollectorContextImpl.java"),
-                result.getFirst().getContent());
         Assertions.assertThat(result)
                 .extracting(FileData::getContent)
                 .contains(collectorContainerImplContent);
@@ -153,11 +180,5 @@ class CollectorGeneratorIntegrationTest {
                 .contains(collectorContainerImplContent);
 
         Assertions.assertThat(result).extracting(FileData::getContent).contains(collectorContent);
-    }
-
-    private static String loadFixture(final String collectorFolder, final String collectorName)
-            throws IOException {
-
-        return Files.readString(Path.of(collectorFolder + collectorName + ".java"));
     }
 }

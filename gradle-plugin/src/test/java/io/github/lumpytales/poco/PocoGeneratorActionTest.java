@@ -40,7 +40,7 @@ class PocoGeneratorActionTest {
         // when
         // then
         Assertions.assertThatThrownBy(
-                        () -> cut.generate(baseClass, outputPackageName, null, null, dir))
+                        () -> cut.generate(baseClass, outputPackageName, null, null, true, dir))
                 .isInstanceOf(IOException.class);
     }
 
@@ -60,7 +60,7 @@ class PocoGeneratorActionTest {
         Mockito.when(file.toPath()).thenReturn(path);
 
         // when
-        cut.generate(baseClass, outputPackageName, null, null, dir);
+        cut.generate(baseClass, outputPackageName, null, null, true, dir);
 
         // then
         Mockito.verify(fs, Mockito.times(2)).writeString(Mockito.any(), Mockito.anyString());

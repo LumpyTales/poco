@@ -54,6 +54,13 @@ public abstract class PocoGenerator extends DefaultTask {
     public abstract ListProperty<String> getAdditionalPackageOrClassNames();
 
     /**
+     * whether to create the collector context or only the poco-classes.
+     */
+    @Input
+    @Optional
+    public abstract Property<Boolean> getGenerateContext();
+
+    /**
      * where to write the generated collector classes
      */
     @OutputDirectory
@@ -89,6 +96,7 @@ public abstract class PocoGenerator extends DefaultTask {
                 getOutputPackageName().getOrNull(),
                 classesToCollect,
                 getAdditionalPackageOrClassNames().getOrNull(),
+                getGenerateContext().getOrNull(),
                 getOutput().get());
     }
 

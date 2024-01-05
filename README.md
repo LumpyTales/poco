@@ -69,6 +69,22 @@ tasks.register<io.github.lumpytales.poco.PocoGenerator>("genOrder") {
 }
 ```
 
+#### Configuration options
+```kotlin
+    baseClass = "de.fun.Order" // class which contains classes to collect
+    outputPackageName = "de.funny.order" // package name which should be used for generated poco classes
+    classesToCollect = listOf("de.fun.Product", "de.fun.Amount") // fully qualified name of classes which should be collected
+    additionalPackageOrClassNames = listOf("com.other.package.Price") // usually only collector classes are generated for classes which exists in the same package as the base class. Here we can add additional package names or even full qualified class names
+    generateContext = true // whether to create the collector context or only the poco-classes
+```
+**Note:** In case you don't need the collector context class you can set the flag "generateContext" to false. 
+In such cases **you will have zero dependencies to this project** and don't have to add the dependency
+```kotlin
+dependencies {
+    implementation("io.github.lumpytales.poco:core:0.1.0")
+}
+```
+
 ### Generated sources
 After you generated the poco-classes you should find, next to the poco-classes, 
 a class which implements the context-interface. You can directly use the poco-classes or alternatively
@@ -85,3 +101,22 @@ build
             |- TagCollector.java
             |- CollectorContextImpl.java
 ```
+
+### Limitations
+#### Container classes
+Currently, there are some limitations according to the generated code. As the java-universe has a lot of different
+classes which act as container (like a List.class, Map.class, ...) for Pojos, not all can be supported.
+
+Right now the following containers/wrappers are supported:
+```text
+- List.class
+- Map.class
+```
+In future there will be the possibility to inject additional or your own container classes.
+
+#### Jakarta dependency
+As the project has the goal to provide generated classes with zero-dependencies to other packages the jakarta-dependency
+will be removed as soon as possible.
+
+In future there will be the possibility to pass in the jakarta annotations or your own annotations which should be 
+used for example to mark the classes as generated.

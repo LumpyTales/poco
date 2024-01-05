@@ -17,11 +17,14 @@ public class CollectorGeneratorParams {
     private final String outputPackageName;
 
     /** classes which should be collected. If unset, it will generate a collector {@link java.util.function.Function} for all nested classes of the base class */
-    @Nullable private List<Class<?>> classesToCollect;
+    private List<Class<?>> classesToCollect;
 
     /** usually only collector classes are generated for classes which exists in the same package as the base class.
      * Here we can add additional package names or even full qualified class names. */
-    @Nullable private List<String> additionalPackageOrClassNames;
+    private List<String> additionalPackageOrClassNames;
+
+    /** whether to create the collector context or only the poco-classes */
+    private Boolean generateContext = Boolean.TRUE;
 
     /**
      * constructor
@@ -45,7 +48,7 @@ public class CollectorGeneratorParams {
      * Define which classes should be collected
      * @param classesToCollect {@code null} or a non-modifiable list of classes to collect
      */
-    public void setClassesToCollect(@Nullable List<Class<?>> classesToCollect) {
+    public void setClassesToCollect(@Nullable final List<Class<?>> classesToCollect) {
         this.classesToCollect =
                 classesToCollect != null ? Collections.unmodifiableList(classesToCollect) : null;
     }
@@ -55,10 +58,21 @@ public class CollectorGeneratorParams {
      * @param additionalPackageOrClassNames {@code null} or a non-modifiable list of additional package or class names
      */
     public void setAdditionalPackageOrClassNames(
-            @Nullable List<String> additionalPackageOrClassNames) {
+            @Nullable final List<String> additionalPackageOrClassNames) {
         this.additionalPackageOrClassNames =
                 additionalPackageOrClassNames != null
                         ? Collections.unmodifiableList(additionalPackageOrClassNames)
                         : null;
+    }
+
+    /**
+     * whether to create the collector context or only the poco-classes.
+     * @param generateContext {@code null} or decision to generate or not. {@code null} is treated as {@code false},
+     *                                         which means that the context is generated
+     */
+    public void setGenerateContext(@Nullable final Boolean generateContext) {
+        if (generateContext != null) {
+            this.generateContext = generateContext;
+        }
     }
 }

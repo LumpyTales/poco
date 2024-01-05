@@ -57,20 +57,20 @@ public class CollectorGenerator {
     /**
      * generates the {@link java.util.function.Function} classes
      *
-     * @param cmd contains details how and where to generate the collector classes
+     * @param params contains details how and where to generate the collector classes
      * @throws IOException in case the java-files can not be written to the {@code outputFolder}
      * @return a list of string containing the generated source-code
      */
-    public List<FileData> generateFor(final CollectorGeneratorParams cmd) throws IOException {
+    public List<FileData> generateFor(final CollectorGeneratorParams params) throws IOException {
 
-        final var baseClass = cmd.getBaseClass();
-        final var classesToCollect = cmd.getClassesToCollect();
-        final var outputPackageName = cmd.getOutputPackageName();
+        final var baseClass = params.getBaseClass();
+        final var classesToCollect = params.getClassesToCollect();
+        final var outputPackageName = params.getOutputPackageName();
 
         // create the class metadata which contains the information which (nested) fields of
         // package exists in the base class
         final var classMetaData =
-                classFieldProvider.create(baseClass, cmd.getAdditionalPackageOrClassNames());
+                classFieldProvider.create(baseClass, params.getAdditionalPackageOrClassNames());
         // we need a class hierarchy for the fields we collected, to be able to create the path from
         // base class to target field which should be collected
         final var classHierarchy = classFieldHierarchyGenerator.createFrom(classMetaData);
@@ -114,7 +114,7 @@ public class CollectorGenerator {
         }
 
         // only generate collector container if we have collectors
-        if (!collectorsCode.isEmpty()) {
+        if (!collectorsCode.isEmpty() && Boolean.TRUE.equals(params.getGenerateContext())) {
             // create a collector container which allows to get an instance of a collector for a
             // specific class to collect
             final var collectorContainer =
