@@ -11,11 +11,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * used to test {@link CodeBlockGenerator}
+ * used to test {@link CollectorMethodBodyGenerator}
  */
-class CodeBlockGeneratorTest {
+class CollectorMethodBodyGeneratorTest {
 
-    private final CodeBlockGenerator cut = new CodeBlockGenerator();
+    private final CollectorMethodBodyGenerator cut = new CollectorMethodBodyGenerator();
 
     @Test
     void When_base_class_object_name_retrieved_Then_expect_it_to_be_pojo() {

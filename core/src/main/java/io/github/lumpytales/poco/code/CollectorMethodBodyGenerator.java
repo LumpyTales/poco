@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * class will create the code blocks based on the collected path from the base class to the class to create the collector for
  */
-public class CodeBlockGenerator {
+public class CollectorMethodBodyGenerator {
 
     private static final String BASE_CLASS_OBJECT_NAME = "pojo";
 

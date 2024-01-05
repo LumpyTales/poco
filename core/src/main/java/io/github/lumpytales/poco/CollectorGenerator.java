@@ -5,8 +5,8 @@ import io.github.lumpytales.poco.analysis.collector.ClassCollectorDetector;
 import io.github.lumpytales.poco.analysis.hierachy.ClassFieldHierarchyGenerator;
 import io.github.lumpytales.poco.analysis.metadata.ClassMetaDataProvider;
 import io.github.lumpytales.poco.analysis.path.FieldPathGenerator;
-import io.github.lumpytales.poco.code.CodeBlockGenerator;
 import io.github.lumpytales.poco.code.CollectorFactory;
+import io.github.lumpytales.poco.code.CollectorMethodBodyGenerator;
 import io.github.lumpytales.poco.config.CollectorGeneratorConfig;
 import io.github.lumpytales.poco.file.TypeSpecConverter;
 import java.io.IOException;
@@ -25,10 +25,10 @@ import java.util.Set;
  */
 public class CollectorGenerator {
 
-    private final ClassMetaDataProvider classFieldProvider;
+    private final ClassMetaDataProvider classMetaDataProvider;
     private final ClassFieldHierarchyGenerator classFieldHierarchyGenerator;
-    private final FieldPathGenerator classFieldFieldPathGenerator;
-    private final CodeBlockGenerator codeBlockGenerator;
+    private final FieldPathGenerator fieldPathGenerator;
+    private final CollectorMethodBodyGenerator collectorMethodBodyGenerator;
     private final CollectorFactory collectorFactory;
     private final ClassCollectorDetector classCollectorDetector;
     private final TypeSpecConverter typeSpecConverter;
@@ -45,10 +45,10 @@ public class CollectorGenerator {
      * @param config for tests
      */
     CollectorGenerator(final CollectorGeneratorConfig config) {
-        this.classFieldProvider = config.getClassFieldProvider();
+        this.classMetaDataProvider = config.getClassMetaDataProvider();
         this.classFieldHierarchyGenerator = config.getClassFieldHierarchyGenerator();
-        this.classFieldFieldPathGenerator = config.getClassFieldFieldPathGenerator();
-        this.codeBlockGenerator = config.getCodeBlockGenerator();
+        this.fieldPathGenerator = config.getFieldPathGenerator();
+        this.collectorMethodBodyGenerator = config.getCollectorMethodBodyGenerator();
         this.collectorFactory = config.getCollectorFactory();
         this.classCollectorDetector = config.getClassCollectorDetector();
         this.typeSpecConverter = config.getTypeSpecConverter();
@@ -70,7 +70,7 @@ public class CollectorGenerator {
         // create the class metadata which contains the information which (nested) fields of
         // package exists in the base class
         final var classMetaData =
-                classFieldProvider.create(baseClass, params.getAdditionalPackageOrClassNames());
+                classMetaDataProvider.create(baseClass, params.getAdditionalPackageOrClassNames());
         // we need a class hierarchy for the fields we collected, to be able to create the path from
         // base class to target field which should be collected
         final var classHierarchy = classFieldHierarchyGenerator.createFrom(classMetaData);
@@ -87,10 +87,10 @@ public class CollectorGenerator {
             // e.g. [["root" -> "nested" -> "classToCollect"], ["root" -> "nested" -> "nested" ->
             // "classToCollect"]]
             final var paths =
-                    classFieldFieldPathGenerator.createPathsTo(classHierarchy, collectorClass);
+                    fieldPathGenerator.createPathsTo(classHierarchy, collectorClass);
 
             // based on the paths details we can generate the content of the collector class method
-            final var codeBlocks = codeBlockGenerator.generate(paths);
+            final var codeBlocks = collectorMethodBodyGenerator.generate(paths);
             if (codeBlocks.isEmpty()) {
                 // no content for class - so collector is not necessary
                 // usually when the class has no nested classes of same package
@@ -99,7 +99,7 @@ public class CollectorGenerator {
             // create the class with the generate content for collector method
             final var collector =
                     collectorFactory.createCollector(
-                            codeBlockGenerator.getBaseClassObjectName(),
+                            collectorMethodBodyGenerator.getBaseClassObjectName(),
                             baseClass,
                             collectorClass,
                             codeBlocks);

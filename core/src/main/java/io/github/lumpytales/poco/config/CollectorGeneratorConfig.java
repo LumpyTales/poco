@@ -4,8 +4,8 @@ import io.github.lumpytales.poco.analysis.collector.ClassCollectorDetector;
 import io.github.lumpytales.poco.analysis.hierachy.ClassFieldHierarchyGenerator;
 import io.github.lumpytales.poco.analysis.metadata.ClassMetaDataProvider;
 import io.github.lumpytales.poco.analysis.path.FieldPathGenerator;
-import io.github.lumpytales.poco.code.CodeBlockGenerator;
 import io.github.lumpytales.poco.code.CollectorFactory;
+import io.github.lumpytales.poco.code.CollectorMethodBodyGenerator;
 import io.github.lumpytales.poco.file.TypeSpecConverter;
 import lombok.Getter;
 
@@ -14,10 +14,10 @@ import lombok.Getter;
  */
 @Getter
 public class CollectorGeneratorConfig {
-    private final ClassMetaDataProvider classFieldProvider;
+    private final ClassMetaDataProvider classMetaDataProvider;
     private final ClassFieldHierarchyGenerator classFieldHierarchyGenerator;
-    private final FieldPathGenerator classFieldFieldPathGenerator;
-    private final CodeBlockGenerator codeBlockGenerator;
+    private final FieldPathGenerator fieldPathGenerator;
+    private final CollectorMethodBodyGenerator collectorMethodBodyGenerator;
     private final CollectorFactory collectorFactory;
     private final ClassCollectorDetector classCollectorDetector;
     private final TypeSpecConverter typeSpecConverter;
@@ -26,10 +26,10 @@ public class CollectorGeneratorConfig {
      * initializes the {@link io.github.lumpytales.poco.CollectorGenerator} with default settings
      */
     public CollectorGeneratorConfig() {
-        this.classFieldProvider = new ClassMetaDataProvider();
+        this.classMetaDataProvider = new ClassMetaDataProvider();
         this.classFieldHierarchyGenerator = new ClassFieldHierarchyGenerator();
-        this.classFieldFieldPathGenerator = new FieldPathGenerator();
-        this.codeBlockGenerator = new CodeBlockGenerator();
+        this.fieldPathGenerator = new FieldPathGenerator();
+        this.collectorMethodBodyGenerator = new CollectorMethodBodyGenerator();
         this.collectorFactory = new CollectorFactory();
         this.classCollectorDetector = new ClassCollectorDetector();
         this.typeSpecConverter = new TypeSpecConverter();
