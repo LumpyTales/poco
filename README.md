@@ -103,7 +103,7 @@ build
 ```
 
 ### Limitations
-#### Container classes
+#### [Container classes](https://github.com/LumpyTales/poco/issues/1)
 Currently, there are some limitations according to the generated code. As the java-universe has a lot of different
 classes which act as container (like a List.class, Map.class, ...) for Pojos, not all can be supported.
 
@@ -114,7 +114,7 @@ Right now the following containers/wrappers are supported:
 ```
 In future there will be the possibility to inject additional or your own container classes.
 
-#### Jakarta dependency
+#### [Jakarta dependency](https://github.com/LumpyTales/poco/issues/2)
 As the project has the goal to provide generated classes with zero-dependencies to other packages the jakarta-dependency
 will be removed as soon as possible.
 
