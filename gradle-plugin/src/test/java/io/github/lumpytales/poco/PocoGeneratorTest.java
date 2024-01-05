@@ -1,6 +1,7 @@
 package io.github.lumpytales.poco;
 
 import io.github.lumpytales.poco.testclasses.Person;
+import java.nio.file.Path;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.assertj.core.api.Assertions;
@@ -50,7 +51,7 @@ class PocoGeneratorTest {
         final var result = cut.getOutput().get().toString();
 
         // then
-        Assertions.assertThat(result).endsWith("build\\generated-poco");
+        Assertions.assertThat(result).endsWith(Path.of("build", "generated-poco").toString());
     }
 
     @Test
