@@ -51,7 +51,10 @@ class PocoGeneratorTest {
         final var result = cut.getOutput().get().toString();
 
         // then
-        Assertions.assertThat(result).endsWith(Path.of("build", "generated-poco").toString());
+        Assertions.assertThat(result)
+                .endsWith(
+                        Path.of("build", "generated", "sources", "poco", "src", "main", "java")
+                                .toString());
     }
 
     @Test

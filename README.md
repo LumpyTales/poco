@@ -40,7 +40,7 @@ After all add the generated classes to you source-sets.
 ```kotlin
 java.sourceSets["main"].java {
     srcDirs(
-        project.layout.buildDirectory.dir("generated-poco")
+        project.layout.buildDirectory.dir("generated/sources/poco/src/main/java")
     )
 }
 ```

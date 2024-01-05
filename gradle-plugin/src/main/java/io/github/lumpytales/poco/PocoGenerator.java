@@ -15,6 +15,7 @@ import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskAction;
@@ -33,9 +34,14 @@ public abstract class PocoGenerator extends DefaultTask {
     /** the directory where the classes are generated */
     @Getter(AccessLevel.PRIVATE)
     private final Directory genDirectory =
-            getProject().getLayout().getBuildDirectory().dir("generated-poco").get();
+            getProject()
+                    .getLayout()
+                    .getBuildDirectory()
+                    .dir("generated/sources/poco/src/main/java")
+                    .get();
 
     /** action to generate the collector classes */
+    @Internal
     abstract Property<PocoGeneratorAction> getAction();
 
     /** fully qualified name of the class where to collect from */
