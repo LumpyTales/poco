@@ -89,6 +89,7 @@ class PocoGeneratorTest {
                         List.of(),
                         List.of(),
                         null,
+                        null,
                         cut.getOutput().get());
     }
 
@@ -100,6 +101,7 @@ class PocoGeneratorTest {
         cut.getClassesToCollect().set(List.of(String.class.getName()));
         cut.getAdditionalPackageOrClassNames().set(List.of(String.class.getPackageName()));
         cut.getGenerateContext().set(false);
+        cut.getGeneratedAnnotation().set(lombok.Generated.class.getName());
 
         // when
         cut.generate();
@@ -112,6 +114,7 @@ class PocoGeneratorTest {
                         List.of(String.class),
                         List.of(String.class.getPackageName()),
                         false,
+                        lombok.Generated.class,
                         cut.getOutput().get());
     }
 }

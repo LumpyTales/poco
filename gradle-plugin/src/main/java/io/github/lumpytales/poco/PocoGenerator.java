@@ -1,6 +1,7 @@
 package io.github.lumpytales.poco;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -71,6 +72,13 @@ public abstract class PocoGenerator extends DefaultTask {
     public abstract Property<Boolean> getGenerateContext();
 
     /**
+     * fully qualified name of annotation type which should be used to mark classes as generated.
+     */
+    @Input
+    @Optional
+    public abstract Property<String> getGeneratedAnnotation();
+
+    /**
      * where to write the generated collector classes
      */
     @OutputDirectory
@@ -89,6 +97,7 @@ public abstract class PocoGenerator extends DefaultTask {
      * @throws ClassNotFoundException in case configured classes are not available
      */
     @TaskAction
+    @SuppressWarnings("unchecked")
     public void generate() throws IOException, ClassNotFoundException {
         final var classLoader = createClassLoader();
 
@@ -101,6 +110,13 @@ public abstract class PocoGenerator extends DefaultTask {
             }
         }
 
+        Class<? extends Annotation> generatedAnnotation = null;
+        if (getGeneratedAnnotation().getOrNull() != null) {
+            generatedAnnotation =
+                    (Class<? extends Annotation>)
+                            Class.forName(getGeneratedAnnotation().get(), false, classLoader);
+        }
+
         final var action = getAction().getOrElse(getDefaultAction());
         action.generate(
                 baseClass,
@@ -108,6 +124,7 @@ public abstract class PocoGenerator extends DefaultTask {
                 classesToCollect,
                 getAdditionalPackageOrClassNames().getOrNull(),
                 getGenerateContext().getOrNull(),
+                generatedAnnotation,
                 getOutput().get());
     }
 

@@ -5,7 +5,6 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
-import io.github.lumpytales.poco.CollectorGenerator;
 import io.github.lumpytales.poco.testclasses.Order;
 import io.github.lumpytales.poco.testclasses.Product;
 import jakarta.annotation.Generated;
@@ -34,7 +33,11 @@ class CollectorFactoryTest {
         // when
         final var result =
                 cut.createCollector(
-                        baseClassMethodFieldName, baseClass, classToCollect, codeBlocks);
+                        baseClassMethodFieldName,
+                        baseClass,
+                        classToCollect,
+                        codeBlocks,
+                        AnnotationSpec.builder(Generated.class).build());
 
         // then
         Assertions.assertThat(result)
@@ -61,7 +64,11 @@ class CollectorFactoryTest {
         // when
         final var result =
                 cut.createCollector(
-                        baseClassMethodFieldName, baseClass, classToCollect, codeBlocks);
+                        baseClassMethodFieldName,
+                        baseClass,
+                        classToCollect,
+                        codeBlocks,
+                        AnnotationSpec.builder(Generated.class).build());
 
         // then
         Assertions.assertThat(result)
@@ -80,7 +87,11 @@ class CollectorFactoryTest {
         // when
         final var result =
                 cut.createCollector(
-                        baseClassMethodFieldName, baseClass, classToCollect, codeBlocks);
+                        baseClassMethodFieldName,
+                        baseClass,
+                        classToCollect,
+                        codeBlocks,
+                        AnnotationSpec.builder(Generated.class).build());
 
         // then
         Assertions.assertThat(result.superinterfaces)
@@ -103,14 +114,15 @@ class CollectorFactoryTest {
         // when
         final var result =
                 cut.createCollector(
-                        baseClassMethodFieldName, baseClass, classToCollect, codeBlocks);
+                        baseClassMethodFieldName,
+                        baseClass,
+                        classToCollect,
+                        codeBlocks,
+                        AnnotationSpec.builder(Generated.class).build());
 
         // then
         Assertions.assertThat(result.annotations)
-                .containsExactly(
-                        AnnotationSpec.builder(Generated.class)
-                                .addMember("value", "$S", CollectorGenerator.class.getName())
-                                .build());
+                .containsExactly(AnnotationSpec.builder(Generated.class).build());
     }
 
     @Test
@@ -124,7 +136,11 @@ class CollectorFactoryTest {
         // when
         final var result =
                 cut.createCollector(
-                        baseClassMethodFieldName, baseClass, classToCollect, codeBlocks);
+                        baseClassMethodFieldName,
+                        baseClass,
+                        classToCollect,
+                        codeBlocks,
+                        AnnotationSpec.builder(Generated.class).build());
 
         // then
         Assertions.assertThat(result.methodSpecs).hasSize(1);

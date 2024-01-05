@@ -7,6 +7,7 @@ import io.github.lumpytales.poco.analysis.metadata.ClassMetaDataProvider;
 import io.github.lumpytales.poco.analysis.path.FieldPathGenerator;
 import io.github.lumpytales.poco.code.CollectorFactory;
 import io.github.lumpytales.poco.code.CollectorMethodBodyGenerator;
+import io.github.lumpytales.poco.code.GeneratedAnnotationFactory;
 import io.github.lumpytales.poco.config.CollectorGeneratorConfig;
 import io.github.lumpytales.poco.file.TypeSpecConverter;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class CollectorGenerator {
     private final CollectorFactory collectorFactory;
     private final ClassCollectorDetector classCollectorDetector;
     private final TypeSpecConverter typeSpecConverter;
+    private final GeneratedAnnotationFactory generatedAnnotationFactory;
 
     /**
      * initializes the {@link CollectorGenerator}
@@ -52,6 +54,7 @@ public class CollectorGenerator {
         this.collectorFactory = config.getCollectorFactory();
         this.classCollectorDetector = config.getClassCollectorDetector();
         this.typeSpecConverter = config.getTypeSpecConverter();
+        this.generatedAnnotationFactory = config.getGeneratedAnnotationFactory();
     }
 
     /**
@@ -66,6 +69,8 @@ public class CollectorGenerator {
         final var baseClass = params.getBaseClass();
         final var classesToCollect = params.getClassesToCollect();
         final var outputPackageName = params.getOutputPackageName();
+        final var generatedAnnotation =
+                generatedAnnotationFactory.create(params.getGeneratedAnnotation());
 
         // create the class metadata which contains the information which (nested) fields of
         // package exists in the base class
@@ -86,8 +91,7 @@ public class CollectorGenerator {
             // root
             // e.g. [["root" -> "nested" -> "classToCollect"], ["root" -> "nested" -> "nested" ->
             // "classToCollect"]]
-            final var paths =
-                    fieldPathGenerator.createPathsTo(classHierarchy, collectorClass);
+            final var paths = fieldPathGenerator.createPathsTo(classHierarchy, collectorClass);
 
             // based on the paths details we can generate the content of the collector class method
             final var codeBlocks = collectorMethodBodyGenerator.generate(paths);
@@ -102,7 +106,8 @@ public class CollectorGenerator {
                             collectorMethodBodyGenerator.getBaseClassObjectName(),
                             baseClass,
                             collectorClass,
-                            codeBlocks);
+                            codeBlocks,
+                            generatedAnnotation);
             collectors.add(collector);
         }
 
@@ -119,7 +124,7 @@ public class CollectorGenerator {
             // specific class to collect
             final var collectorContainer =
                     collectorFactory.createCollectorContext(
-                            outputPackageName, baseClass, collectors);
+                            outputPackageName, baseClass, collectors, generatedAnnotation);
             final var collectorContainerCode =
                     typeSpecConverter.convert(outputPackageName, collectorContainer);
             collectorsCode.add(collectorContainerCode);

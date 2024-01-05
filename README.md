@@ -76,12 +76,22 @@ tasks.register<io.github.lumpytales.poco.PocoGenerator>("genOrder") {
     classesToCollect = listOf("de.fun.Product", "de.fun.Amount") // fully qualified name of classes which should be collected
     additionalPackageOrClassNames = listOf("com.other.package.Price") // usually only collector classes are generated for classes which exists in the same package as the base class. Here we can add additional package names or even full qualified class names
     generateContext = true // whether to create the collector context or only the poco-classes
+    generatedAnnotation = "jakarta.annotation.Generated" // annotation which should be used to mark classes as generated
 ```
 **Note:** In case you don't need the collector context class you can set the flag "generateContext" to false. 
 In such cases **you will have zero dependencies to this project** and don't have to add the dependency
 ```kotlin
 dependencies {
     implementation("io.github.lumpytales.poco:core:0.1.0")
+}
+```
+**Note:** In case you want to use your own generated annotation for the poco-classes, feel free to set the config 
+"generatedAnnotation" to a fully qualified class name which extends an annotation.
+
+In such cases **you will have zero dependencies to the jakarta project** and don't have to add the dependency
+```kotlin
+dependencies {
+    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0-M1")
 }
 ```
 
@@ -113,10 +123,3 @@ Right now the following containers/wrappers are supported:
 - Map.class
 ```
 In future there will be the possibility to inject additional or your own container classes.
-
-#### [Jakarta dependency](https://github.com/LumpyTales/poco/issues/2)
-As the project has the goal to provide generated classes with zero-dependencies to other packages the jakarta-dependency
-will be removed as soon as possible.
-
-In future there will be the possibility to pass in the jakarta annotations or your own annotations which should be 
-used for example to mark the classes as generated.

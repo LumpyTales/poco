@@ -2,6 +2,7 @@ package io.github.lumpytales.poco;
 
 import jakarta.annotation.Nullable;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.List;
 import org.gradle.api.file.Directory;
 
@@ -39,6 +40,7 @@ public class PocoGeneratorAction {
      * @param classesToCollect classes which should be collected.
      * @param additionalPackageOrClassNames additional package names or even full qualified class names
      * @param generateContext whether to create the collector context or only the poco-classes
+     * @param generatedAnnotation annotation which should be used to mark classes as generated instead of the default one
      * @param directory where to write the generated collector classes
      * @throws IOException in case collector classes cannot be created
      */
@@ -48,6 +50,7 @@ public class PocoGeneratorAction {
             @Nullable final List<Class<?>> classesToCollect,
             @Nullable final List<String> additionalPackageOrClassNames,
             @Nullable final Boolean generateContext,
+            @Nullable final Class<? extends Annotation> generatedAnnotation,
             final Directory directory)
             throws IOException {
 
@@ -55,6 +58,7 @@ public class PocoGeneratorAction {
         params.setClassesToCollect(classesToCollect);
         params.setAdditionalPackageOrClassNames(additionalPackageOrClassNames);
         params.setGenerateContext(generateContext);
+        params.setGeneratedAnnotation(generatedAnnotation);
 
         final var result = generator.generateFor(params);
 

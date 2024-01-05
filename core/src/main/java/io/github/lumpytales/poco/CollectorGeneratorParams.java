@@ -1,6 +1,8 @@
 package io.github.lumpytales.poco;
 
+import jakarta.annotation.Generated;
 import jakarta.annotation.Nullable;
+import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
@@ -22,6 +24,9 @@ public class CollectorGeneratorParams {
     /** usually only collector classes are generated for classes which exists in the same package as the base class.
      * Here we can add additional package names or even full qualified class names. */
     private List<String> additionalPackageOrClassNames;
+
+    /** annotation which should be used to mark classes as generated */
+    @Nullable private Class<? extends Annotation> generatedAnnotation;
 
     /** whether to create the collector context or only the poco-classes */
     private Boolean generateContext = Boolean.TRUE;
@@ -63,6 +68,15 @@ public class CollectorGeneratorParams {
                 additionalPackageOrClassNames != null
                         ? Collections.unmodifiableList(additionalPackageOrClassNames)
                         : null;
+    }
+
+    /**
+     * annotation which should be used to mark classes as generated
+     * @param generatedAnnotation {@code null} or annotation to use. if {@code null} default annotation is used {@link Generated}
+     */
+    public void setGeneratedAnnotation(
+            @Nullable final Class<? extends Annotation> generatedAnnotation) {
+        this.generatedAnnotation = generatedAnnotation;
     }
 
     /**

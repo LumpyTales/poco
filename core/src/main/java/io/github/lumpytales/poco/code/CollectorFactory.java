@@ -10,8 +10,6 @@ import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeVariableName;
 import com.squareup.javapoet.WildcardTypeName;
 import io.github.lumpytales.poco.CollectorContext;
-import io.github.lumpytales.poco.CollectorGenerator;
-import jakarta.annotation.Generated;
 import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,13 +34,15 @@ public class CollectorFactory {
      * @param baseClass where to collect the nested objects of interested from
      * @param classToCollect from the base class
      * @param codeBlocks which are necessary to collect the nested objects from the base object
+     * @param generatedAnnotation annotation which should be used to mark class as generated
      * @return class specification for the {@link Function}
      */
     public TypeSpec createCollector(
             final String baseClassMethodFieldName,
             final Class<?> baseClass,
             final Class<?> classToCollect,
-            final List<CodeBlock> codeBlocks) {
+            final List<CodeBlock> codeBlocks,
+            final AnnotationSpec generatedAnnotation) {
 
         final var classToCollectFieldName = "result";
         final var baseClassName =
@@ -117,10 +117,7 @@ public class CollectorFactory {
                         .build();
 
         return TypeSpec.classBuilder(classToCollect.getSimpleName() + "Collector")
-                .addAnnotation(
-                        AnnotationSpec.builder(Generated.class)
-                                .addMember("value", "$S", CollectorGenerator.class.getName())
-                                .build())
+                .addAnnotation(generatedAnnotation)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addMethod(methodSpec)
                 .addSuperinterface(collectorInterface)
@@ -134,12 +131,14 @@ public class CollectorFactory {
      * @param collectorsPackageName name of the package where the collector classes are generated in
      * @param baseClass where to collect the nested objects of interested from
      * @param collectors the specification of the collector classes
+     * @param generatedAnnotation annotation which should be used to mark class as generated
      * @return class specification for the {@link CollectorContext}
      */
     public TypeSpec createCollectorContext(
             final String collectorsPackageName,
             final Class<?> baseClass,
-            final List<TypeSpec> collectors) {
+            final List<TypeSpec> collectors,
+            final AnnotationSpec generatedAnnotation) {
 
         final CodeBlock.Builder collectiblesListInitializer = CodeBlock.builder().add("List.of(");
         final CodeBlock.Builder collectorMapInitializer = CodeBlock.builder().add("Map.of(");
@@ -262,13 +261,9 @@ public class CollectorFactory {
 
         return TypeSpec.classBuilder("CollectorContextImpl")
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                .addAnnotation(
-                        AnnotationSpec.builder(Generated.class)
-                                .addMember("value", "$S", CollectorGenerator.class.getName())
-                                .build())
+                .addAnnotation(generatedAnnotation)
                 .addField(listOfGenericWildcardClassField)
                 .addField(mapOfCollectorsField)
-                // .addMethod(constructorBuilder.build())
                 .addMethod(getAvailableCollectiblesMethod.build())
                 .addMethod(getCollectorMethod.build())
                 .addSuperinterface(collectorContainerInterface)
