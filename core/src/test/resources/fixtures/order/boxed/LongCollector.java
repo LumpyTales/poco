@@ -1,6 +1,6 @@
 package io.github.lumpytales.poco;
 
-import io.github.lumpytales.poco.testclasses.Tag;
+import io.github.lumpytales.poco.core.testclasses.Tag;
 import jakarta.annotation.Generated;
 import java.lang.Long;
 import java.lang.Override;
@@ -14,7 +14,7 @@ import java.util.function.Function;
  * BaseClass: {@link Tag}
  * ClassToCollect: {@link Long}
  */
-@Generated("io.github.lumpytales.poco.CollectorGenerator")
+@Generated("io.github.lumpytales.poco.core.CollectorGenerator")
 public final class LongCollector implements Function<Tag, List<Long>> {
   /**
    * @return all objects of type {@link Long} from anywhere in base class of type {@link Tag}

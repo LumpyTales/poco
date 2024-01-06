@@ -1,8 +1,9 @@
 package io.github.lumpytales.poco;
 
-import io.github.lumpytales.poco.testclasses.Price;
-import io.github.lumpytales.poco.testclasses.Product;
-import io.github.lumpytales.poco.testclasses.Tag;
+import io.github.lumpytales.poco.core.CollectorContext;
+import io.github.lumpytales.poco.core.testclasses.Price;
+import io.github.lumpytales.poco.core.testclasses.Product;
+import io.github.lumpytales.poco.core.testclasses.Tag;
 import jakarta.annotation.Generated;
 import jakarta.annotation.Nullable;
 import java.lang.Class;
@@ -15,7 +16,7 @@ import java.util.function.Function;
 /**
  * This class contains all collector instances {@link Function} and can be used to get a specific collector for a specific class to collect!
  */
-@Generated("io.github.lumpytales.poco.CollectorGenerator")
+@Generated("io.github.lumpytales.poco.core.CollectorGenerator")
 public final class CollectorContextImpl implements CollectorContext<Product> {
   private final List<Class<?>> collectibles = List.of(Price.class, Tag.class);
 

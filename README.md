@@ -25,7 +25,7 @@ To get started with the gradle plugin you should add it to your build.gradle in 
 ### Plugin configuration
 ```kotlin
 plugins {
-    id("io.github.lumpytales.poco") version "0.1.0"
+    id("io.github.lumpytales.poco.gradle-plugin") version "0.1.0"
 }
 ```
 Beside that you also have to add the core-library and jakarta.annotation as dependency. Jakarta annotation is used to 
@@ -48,11 +48,11 @@ java.sourceSets["main"].java {
 ### Task configuration
 Then you are good to go and can add your own tasks to generate poco-classes.
 ```kotlin
-tasks.register<io.github.lumpytales.poco.PocoGenerator>("genOrder") {
+tasks.register<io.github.lumpytales.poco.plugin.PocoGenerator>("genOrder") {
     baseClass = "de.fun.Order" // class which contains classes to collect
     outputPackageName = "de.funny.order"
 }
-tasks.register<io.github.lumpytales.poco.PocoGenerator>("genPet") {
+tasks.register<io.github.lumpytales.poco.plugin.PocoGenerator>("genPet") {
     baseClass = "de.fun.Pet" // class which contains classes to collect
     outputPackageName = "de.funny.pet"
 }
@@ -60,7 +60,7 @@ tasks.register<io.github.lumpytales.poco.PocoGenerator>("genPet") {
 In case your poco-classes depend on your own classpath and not on a library you use,
 you must add a corresponding dependsOn relation.
 ```kotlin
-tasks.register<io.github.lumpytales.poco.PocoGenerator>("genOrder") {
+tasks.register<io.github.lumpytales.poco.plugin.PocoGenerator>("genOrder") {
     baseClass = "de.fun.Order" // class which contains classes to collect
     outputPackageName = "de.funny.order"
 

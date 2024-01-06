@@ -1,8 +1,8 @@
 /**
  * module definitions
  */
-module io.github.lumpytales.poco {
-    exports io.github.lumpytales.poco;
+module io.github.lumpytales.poco.core {
+    exports io.github.lumpytales.poco.core;
 
     requires lombok;
     requires jakarta.annotation;

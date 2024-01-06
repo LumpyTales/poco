@@ -1,7 +1,7 @@
 package io.github.lumpytales.poco;
 
-import io.github.lumpytales.poco.testclasses.Order;
-import io.github.lumpytales.poco.testclasses.Product;
+import io.github.lumpytales.poco.core.testclasses.Order;
+import io.github.lumpytales.poco.core.testclasses.Product;
 import jakarta.annotation.Generated;
 import java.lang.Override;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.function.Function;
  * BaseClass: {@link Order}
  * ClassToCollect: {@link Product}
  */
-@Generated("io.github.lumpytales.poco.CollectorGenerator")
+@Generated("io.github.lumpytales.poco.core.CollectorGenerator")
 public final class ProductCollector implements Function<Order, List<Product>> {
   /**
    * @return all objects of type {@link Product} from anywhere in base class of type {@link Order}

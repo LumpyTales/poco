@@ -20,8 +20,8 @@ gradlePlugin {
     vcsUrl.set("https://github.com/LumpyTales/poco")
     plugins {
         create("pocoPlugin") {
-            id = project.group.toString()
-            implementationClass = "io.github.lumpytales.poco.PocoPlugin"
+            id = project.group.toString() + ".gradle-plugin"
+            implementationClass = "io.github.lumpytales.poco.plugin.PocoPlugin"
             displayName = "PoCo - Pojo Collector Generator"
             description = "Gradle plugin used to generate so-called pojo-collector classes!"
             tags.set(listOf("poco", "pojo", "collector", "generator"))

@@ -1,8 +1,8 @@
 package io.github.lumpytales.poco;
 
-import io.github.lumpytales.poco.testclasses.Order;
-import io.github.lumpytales.poco.testclasses.Product;
-import io.github.lumpytales.poco.testclasses.Tag;
+import io.github.lumpytales.poco.core.testclasses.Order;
+import io.github.lumpytales.poco.core.testclasses.Product;
+import io.github.lumpytales.poco.core.testclasses.Tag;
 import jakarta.annotation.Generated;
 import java.lang.Override;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.function.Function;
  * BaseClass: {@link Order}
  * ClassToCollect: {@link Tag}
  */
-@Generated("io.github.lumpytales.poco.CollectorGenerator")
+@Generated("io.github.lumpytales.poco.core.CollectorGenerator")
 public final class TagCollector implements Function<Order, List<Tag>> {
   /**
    * @return all objects of type {@link Tag} from anywhere in base class of type {@link Order}
