@@ -48,24 +48,13 @@ java.sourceSets["main"].java {
 ### Task configuration
 Then you are good to go and can add your own tasks to generate poco-classes.
 ```kotlin
-tasks.register<io.github.lumpytales.poco.plugin.PocoGenerator>("genOrder") {
+tasks.register<io.github.lumpytales.poco.plugin.tasks.PocoGeneratorTask>("generateForOrder") {
     baseClass = "de.fun.Order" // class which contains classes to collect
     outputPackageName = "de.funny.order"
 }
-tasks.register<io.github.lumpytales.poco.plugin.PocoGenerator>("genPet") {
+tasks.register<io.github.lumpytales.poco.plugin.tasks.PocoGeneratorTask>("generateForPet") {
     baseClass = "de.fun.Pet" // class which contains classes to collect
     outputPackageName = "de.funny.pet"
-}
-```
-In case your poco-classes depend on your own classpath and not on a library you use,
-you must add a corresponding dependsOn relation.
-```kotlin
-tasks.register<io.github.lumpytales.poco.plugin.PocoGenerator>("genOrder") {
-    baseClass = "de.fun.Order" // class which contains classes to collect
-    outputPackageName = "de.funny.order"
-
-    // baseClass is on the classpath so depends on compilation
-    dependsOn(tasks.compileJava)
 }
 ```
 

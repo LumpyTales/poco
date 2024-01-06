@@ -1,7 +1,6 @@
-package io.github.lumpytales.poco.plugin;
+package io.github.lumpytales.poco.plugin.tasks;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,17 +9,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import lombok.AccessLevel;
 import lombok.Getter;
-import org.gradle.api.DefaultTask;
+import lombok.SneakyThrows;
 import org.gradle.api.UnknownDomainObjectException;
-import org.gradle.api.file.Directory;
-import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
-import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskExecutionException;
 
@@ -28,20 +24,11 @@ import org.gradle.api.tasks.TaskExecutionException;
  * default task which will take the config and generate based upon that the collector {@link java.util.function.Function} and
  * {@link io.github.lumpytales.poco.core.CollectorContext}
  */
-public abstract class PocoGenerator extends DefaultTask {
+public abstract class PocoGeneratorTask extends PocoTask {
 
     /** action to generate the collector classes */
     @Getter(AccessLevel.PRIVATE)
     private final PocoGeneratorAction defaultAction = new PocoGeneratorAction();
-
-    /** the directory where the classes are generated */
-    @Getter(AccessLevel.PRIVATE)
-    private final Directory genDirectory =
-            getProject()
-                    .getLayout()
-                    .getBuildDirectory()
-                    .dir("generated/sources/poco/src/main/java")
-                    .get();
 
     /** action to generate the collector classes */
     @Internal
@@ -87,27 +74,10 @@ public abstract class PocoGenerator extends DefaultTask {
     @Optional
     public abstract Property<String> getNullableAnnotation();
 
-    /**
-     * where to write the generated collector classes
-     */
-    @OutputDirectory
-    public DirectoryProperty getOutput() {
-        return getProject().getObjects().directoryProperty().convention(getGenDirectory());
-    }
-
-    @Override
-    public String getGroup() {
-        return "poco";
-    }
-
-    /**
-     * the action
-     * @throws IOException in case collector classes cannot be created
-     * @throws ClassNotFoundException in case configured classes are not available
-     */
     @TaskAction
+    @SneakyThrows
     @SuppressWarnings("unchecked")
-    public void generate() throws IOException, ClassNotFoundException {
+    public void run() {
         final var classLoader = createClassLoader();
 
         final var baseClass = Class.forName(getBaseClass().getOrNull(), false, classLoader);

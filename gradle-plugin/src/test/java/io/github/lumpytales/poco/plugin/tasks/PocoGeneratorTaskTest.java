@@ -1,4 +1,4 @@
-package io.github.lumpytales.poco.plugin;
+package io.github.lumpytales.poco.plugin.tasks;
 
 import io.github.lumpytales.poco.plugin.testclasses.Person;
 import java.nio.file.Path;
@@ -6,7 +6,6 @@ import java.util.List;
 import lombok.SneakyThrows;
 import org.assertj.core.api.Assertions;
 import org.gradle.api.Project;
-import org.gradle.api.tasks.TaskExecutionException;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,19 +15,18 @@ import org.mockito.Mockito;
 /**
  * used to test {@link PocoGeneratorAction}
  */
-class PocoGeneratorTest {
+class PocoGeneratorTaskTest {
 
     private final PocoGeneratorAction action = Mockito.mock(PocoGeneratorAction.class);
 
     private final Project project = ProjectBuilder.builder().build();
-    private PocoGenerator cut;
+    private PocoGeneratorTask cut;
 
     @BeforeEach
     void setup() {
-        project.getPluginManager().apply("java");
         project.getPluginManager().apply("io.github.lumpytales.poco.gradle-plugin");
 
-        cut = project.getTasks().create("gen", PocoGenerator.class);
+        cut = project.getTasks().create("gen", PocoGeneratorTask.class);
         cut.getAction().set(action);
         cut.getBaseClass().set(Person.class.getName());
         cut.getOutputPackageName().set("de.funny");
@@ -59,28 +57,12 @@ class PocoGeneratorTest {
     }
 
     @Test
-    void When_java_plugin_not_registered_Then_expect_exception() {
-        // given
-        final Project project = ProjectBuilder.builder().build();
-        project.getPluginManager().apply("io.github.lumpytales.poco.gradle-plugin");
-
-        final var cut = project.getTasks().create("gen", PocoGenerator.class);
-        cut.getAction().set(action);
-        cut.getBaseClass().set(Person.class.getName());
-        cut.getOutputPackageName().set("de.funny");
-        cut.getOutput().set(project.getProjectDir());
-
-        // when / then
-        Assertions.assertThatThrownBy(cut::generate).isInstanceOf(TaskExecutionException.class);
-    }
-
-    @Test
     @SneakyThrows
     void When_generation_is_executed_Then_expect_delegated_to_action() {
         // given
 
         // when
-        cut.generate();
+        cut.run();
 
         // then
         Mockito.verify(action, Mockito.times(1))
@@ -107,7 +89,7 @@ class PocoGeneratorTest {
         cut.getNullableAnnotation().set(Nullable.class.getName());
 
         // when
-        cut.generate();
+        cut.run();
 
         // then
         Mockito.verify(action, Mockito.times(1))

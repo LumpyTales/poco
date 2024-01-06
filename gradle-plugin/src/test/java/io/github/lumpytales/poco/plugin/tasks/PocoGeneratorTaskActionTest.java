@@ -1,4 +1,4 @@
-package io.github.lumpytales.poco.plugin;
+package io.github.lumpytales.poco.plugin.tasks;
 
 import io.github.lumpytales.poco.plugin.environment.FileSystem;
 import io.github.lumpytales.poco.plugin.testclasses.Person;
@@ -15,7 +15,7 @@ import org.mockito.Mockito;
 /**
  * used to test {@link PocoGeneratorAction}
  */
-class PocoGeneratorActionTest {
+class PocoGeneratorTaskActionTest {
 
     private Directory dir;
     private FileSystem fs;
