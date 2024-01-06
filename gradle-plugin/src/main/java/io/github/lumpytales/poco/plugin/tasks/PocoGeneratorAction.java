@@ -1,4 +1,4 @@
-package io.github.lumpytales.poco.plugin;
+package io.github.lumpytales.poco.plugin.tasks;
 
 import io.github.lumpytales.poco.core.CollectorGenerator;
 import io.github.lumpytales.poco.core.CollectorGeneratorParams;
