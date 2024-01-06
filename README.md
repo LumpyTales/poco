@@ -25,7 +25,7 @@ To get started with the gradle plugin you should add it to your build.gradle in 
 ### Plugin configuration
 ```kotlin
 plugins {
-    id("io.github.lumpytales.poco") version "0.1.0"
+    id("io.github.lumpytales.poco.gradle-plugin") version "0.1.0"
 }
 ```
 Beside that you also have to add the core-library and jakarta.annotation as dependency. Jakarta annotation is used to 
@@ -48,11 +48,11 @@ java.sourceSets["main"].java {
 ### Task configuration
 Then you are good to go and can add your own tasks to generate poco-classes.
 ```kotlin
-tasks.register<io.github.lumpytales.poco.PocoGenerator>("genOrder") {
+tasks.register<io.github.lumpytales.poco.plugin.PocoGenerator>("genOrder") {
     baseClass = "de.fun.Order" // class which contains classes to collect
     outputPackageName = "de.funny.order"
 }
-tasks.register<io.github.lumpytales.poco.PocoGenerator>("genPet") {
+tasks.register<io.github.lumpytales.poco.plugin.PocoGenerator>("genPet") {
     baseClass = "de.fun.Pet" // class which contains classes to collect
     outputPackageName = "de.funny.pet"
 }
@@ -60,7 +60,7 @@ tasks.register<io.github.lumpytales.poco.PocoGenerator>("genPet") {
 In case your poco-classes depend on your own classpath and not on a library you use,
 you must add a corresponding dependsOn relation.
 ```kotlin
-tasks.register<io.github.lumpytales.poco.PocoGenerator>("genOrder") {
+tasks.register<io.github.lumpytales.poco.plugin.PocoGenerator>("genOrder") {
     baseClass = "de.fun.Order" // class which contains classes to collect
     outputPackageName = "de.funny.order"
 
@@ -76,12 +76,23 @@ tasks.register<io.github.lumpytales.poco.PocoGenerator>("genOrder") {
     classesToCollect = listOf("de.fun.Product", "de.fun.Amount") // fully qualified name of classes which should be collected
     additionalPackageOrClassNames = listOf("com.other.package.Price") // usually only collector classes are generated for classes which exists in the same package as the base class. Here we can add additional package names or even full qualified class names
     generateContext = true // whether to create the collector context or only the poco-classes
+    generatedAnnotation = "jakarta.annotation.Generated" // annotation which should be used to mark classes as generated
+    nullableAnnotation = "jakarta.annotation.Nullable" // annotation which should be used to mark fields etc. as nullable
 ```
 **Note:** In case you don't need the collector context class you can set the flag "generateContext" to false. 
 In such cases **you will have zero dependencies to this project** and don't have to add the dependency
 ```kotlin
 dependencies {
     implementation("io.github.lumpytales.poco:core:0.1.0")
+}
+```
+**Note:** In case you want to use your own generated and nullable annotations for the poco-classes, feel free to set the config 
+"generatedAnnotation" and "nullableAnnotation" to a fully qualified class name which extends an annotation.
+
+In such cases **you will have zero dependencies to the jakarta project** and don't have to add the dependency
+```kotlin
+dependencies {
+    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0-M1")
 }
 ```
 
@@ -113,10 +124,3 @@ Right now the following containers/wrappers are supported:
 - Map.class
 ```
 In future there will be the possibility to inject additional or your own container classes.
-
-#### [Jakarta dependency](https://github.com/LumpyTales/poco/issues/2)
-As the project has the goal to provide generated classes with zero-dependencies to other packages the jakarta-dependency
-will be removed as soon as possible.
-
-In future there will be the possibility to pass in the jakarta annotations or your own annotations which should be 
-used for example to mark the classes as generated.

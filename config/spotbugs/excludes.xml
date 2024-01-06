@@ -11,6 +11,6 @@
     <Match>
         <!-- This rule CT_CONSTRUCTOR_THROW is not necessary -->
         <Bug code="CT" />
-        <Class name="io.github.lumpytales.poco.CollectorGeneratorParams" />
+        <Class name="io.github.lumpytales.poco.core.CollectorGeneratorParams" />
     </Match>
 </FindBugsFilter>
