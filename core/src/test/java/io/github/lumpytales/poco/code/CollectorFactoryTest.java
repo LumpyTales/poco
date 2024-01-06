@@ -8,8 +8,10 @@ import com.squareup.javapoet.TypeName;
 import io.github.lumpytales.poco.testclasses.Order;
 import io.github.lumpytales.poco.testclasses.Product;
 import jakarta.annotation.Generated;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import javax.lang.model.element.Modifier;
 import org.assertj.core.api.Assertions;
@@ -29,6 +31,10 @@ class CollectorFactoryTest {
         final var baseClass = Order.class;
         final var classToCollect = Product.class;
         final var codeBlocks = List.<CodeBlock>of();
+        final var annotationMap =
+                Map.of(
+                        AnnotationType.GENERATED, AnnotationSpec.builder(Generated.class).build(),
+                        AnnotationType.NULLABLE, AnnotationSpec.builder(Nullable.class).build());
 
         // when
         final var result =
@@ -37,7 +43,7 @@ class CollectorFactoryTest {
                         baseClass,
                         classToCollect,
                         codeBlocks,
-                        AnnotationSpec.builder(Generated.class).build());
+                        annotationMap);
 
         // then
         Assertions.assertThat(result)
@@ -60,6 +66,10 @@ class CollectorFactoryTest {
         final var baseClass = Order.class;
         final var classToCollect = Product.class;
         final var codeBlocks = List.<CodeBlock>of();
+        final var annotationMap =
+                Map.of(
+                        AnnotationType.GENERATED, AnnotationSpec.builder(Generated.class).build(),
+                        AnnotationType.NULLABLE, AnnotationSpec.builder(Nullable.class).build());
 
         // when
         final var result =
@@ -68,7 +78,7 @@ class CollectorFactoryTest {
                         baseClass,
                         classToCollect,
                         codeBlocks,
-                        AnnotationSpec.builder(Generated.class).build());
+                        annotationMap);
 
         // then
         Assertions.assertThat(result)
@@ -83,6 +93,10 @@ class CollectorFactoryTest {
         final var baseClass = Order.class;
         final var classToCollect = Product.class;
         final var codeBlocks = List.<CodeBlock>of();
+        final var annotationMap =
+                Map.of(
+                        AnnotationType.GENERATED, AnnotationSpec.builder(Generated.class).build(),
+                        AnnotationType.NULLABLE, AnnotationSpec.builder(Nullable.class).build());
 
         // when
         final var result =
@@ -91,7 +105,7 @@ class CollectorFactoryTest {
                         baseClass,
                         classToCollect,
                         codeBlocks,
-                        AnnotationSpec.builder(Generated.class).build());
+                        annotationMap);
 
         // then
         Assertions.assertThat(result.superinterfaces)
@@ -110,6 +124,10 @@ class CollectorFactoryTest {
         final var baseClass = Order.class;
         final var classToCollect = Product.class;
         final var codeBlocks = List.<CodeBlock>of();
+        final var annotationMap =
+                Map.of(
+                        AnnotationType.GENERATED, AnnotationSpec.builder(Generated.class).build(),
+                        AnnotationType.NULLABLE, AnnotationSpec.builder(Nullable.class).build());
 
         // when
         final var result =
@@ -118,7 +136,7 @@ class CollectorFactoryTest {
                         baseClass,
                         classToCollect,
                         codeBlocks,
-                        AnnotationSpec.builder(Generated.class).build());
+                        annotationMap);
 
         // then
         Assertions.assertThat(result.annotations)
@@ -132,6 +150,10 @@ class CollectorFactoryTest {
         final var baseClass = Order.class;
         final var classToCollect = Product.class;
         final var codeBlocks = List.<CodeBlock>of();
+        final var annotationMap =
+                Map.of(
+                        AnnotationType.GENERATED, AnnotationSpec.builder(Generated.class).build(),
+                        AnnotationType.NULLABLE, AnnotationSpec.builder(Nullable.class).build());
 
         // when
         final var result =
@@ -140,7 +162,7 @@ class CollectorFactoryTest {
                         baseClass,
                         classToCollect,
                         codeBlocks,
-                        AnnotationSpec.builder(Generated.class).build());
+                        annotationMap);
 
         // then
         Assertions.assertThat(result.methodSpecs).hasSize(1);

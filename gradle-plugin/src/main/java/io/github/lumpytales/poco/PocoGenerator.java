@@ -81,6 +81,13 @@ public abstract class PocoGenerator extends DefaultTask {
     public abstract Property<String> getGeneratedAnnotation();
 
     /**
+     * fully qualified name of annotation type which should be used to mark fields etc. as nullable.
+     */
+    @Input
+    @Optional
+    public abstract Property<String> getNullableAnnotation();
+
+    /**
      * where to write the generated collector classes
      */
     @OutputDirectory
@@ -119,6 +126,13 @@ public abstract class PocoGenerator extends DefaultTask {
                             Class.forName(getGeneratedAnnotation().get(), false, classLoader);
         }
 
+        Class<? extends Annotation> nullableAnnotation = null;
+        if (getNullableAnnotation().getOrNull() != null) {
+            nullableAnnotation =
+                    (Class<? extends Annotation>)
+                            Class.forName(getNullableAnnotation().get(), false, classLoader);
+        }
+
         final var action = getAction().getOrElse(getDefaultAction());
         action.generate(
                 baseClass,
@@ -127,6 +141,7 @@ public abstract class PocoGenerator extends DefaultTask {
                 getAdditionalPackageOrClassNames().getOrNull(),
                 getGenerateContext().getOrNull(),
                 generatedAnnotation,
+                nullableAnnotation,
                 getOutput().get());
     }
 

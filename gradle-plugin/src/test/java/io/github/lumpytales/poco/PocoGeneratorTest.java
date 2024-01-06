@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions;
 import org.gradle.api.Project;
 import org.gradle.api.tasks.TaskExecutionException;
 import org.gradle.testfixtures.ProjectBuilder;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -90,6 +91,7 @@ class PocoGeneratorTest {
                         List.of(),
                         null,
                         null,
+                        null,
                         cut.getOutput().get());
     }
 
@@ -102,6 +104,7 @@ class PocoGeneratorTest {
         cut.getAdditionalPackageOrClassNames().set(List.of(String.class.getPackageName()));
         cut.getGenerateContext().set(false);
         cut.getGeneratedAnnotation().set(lombok.Generated.class.getName());
+        cut.getNullableAnnotation().set(Nullable.class.getName());
 
         // when
         cut.generate();
@@ -115,6 +118,7 @@ class PocoGeneratorTest {
                         List.of(String.class.getPackageName()),
                         false,
                         lombok.Generated.class,
+                        Nullable.class,
                         cut.getOutput().get());
     }
 }

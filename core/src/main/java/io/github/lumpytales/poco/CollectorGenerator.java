@@ -1,19 +1,23 @@
 package io.github.lumpytales.poco;
 
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.TypeSpec;
 import io.github.lumpytales.poco.analysis.collector.ClassCollectorDetector;
 import io.github.lumpytales.poco.analysis.hierachy.ClassFieldHierarchyGenerator;
 import io.github.lumpytales.poco.analysis.metadata.ClassMetaDataProvider;
 import io.github.lumpytales.poco.analysis.path.FieldPathGenerator;
+import io.github.lumpytales.poco.code.AnnotationFactory;
+import io.github.lumpytales.poco.code.AnnotationType;
 import io.github.lumpytales.poco.code.CollectorFactory;
 import io.github.lumpytales.poco.code.CollectorMethodBodyGenerator;
-import io.github.lumpytales.poco.code.GeneratedAnnotationFactory;
 import io.github.lumpytales.poco.config.CollectorGeneratorConfig;
 import io.github.lumpytales.poco.file.TypeSpecConverter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,7 +37,7 @@ public class CollectorGenerator {
     private final CollectorFactory collectorFactory;
     private final ClassCollectorDetector classCollectorDetector;
     private final TypeSpecConverter typeSpecConverter;
-    private final GeneratedAnnotationFactory generatedAnnotationFactory;
+    private final AnnotationFactory annotationFactory;
 
     /**
      * initializes the {@link CollectorGenerator}
@@ -54,7 +58,7 @@ public class CollectorGenerator {
         this.collectorFactory = config.getCollectorFactory();
         this.classCollectorDetector = config.getClassCollectorDetector();
         this.typeSpecConverter = config.getTypeSpecConverter();
-        this.generatedAnnotationFactory = config.getGeneratedAnnotationFactory();
+        this.annotationFactory = config.getAnnotationFactory();
     }
 
     /**
@@ -70,7 +74,16 @@ public class CollectorGenerator {
         final var classesToCollect = params.getClassesToCollect();
         final var outputPackageName = params.getOutputPackageName();
         final var generatedAnnotation =
-                generatedAnnotationFactory.create(params.getGeneratedAnnotation());
+                annotationFactory.create(params.getGeneratedAnnotation(), AnnotationType.GENERATED);
+        final var nullableAnnotation =
+                annotationFactory.create(params.getNullableAnnotation(), AnnotationType.NULLABLE);
+        final Map<AnnotationType, AnnotationSpec> annotationMap =
+                new HashMap<>() {
+                    {
+                        put(AnnotationType.GENERATED, generatedAnnotation);
+                        put(AnnotationType.NULLABLE, nullableAnnotation);
+                    }
+                };
 
         // create the class metadata which contains the information which (nested) fields of
         // package exists in the base class
@@ -107,7 +120,7 @@ public class CollectorGenerator {
                             baseClass,
                             collectorClass,
                             codeBlocks,
-                            generatedAnnotation);
+                            annotationMap);
             collectors.add(collector);
         }
 
@@ -124,7 +137,7 @@ public class CollectorGenerator {
             // specific class to collect
             final var collectorContainer =
                     collectorFactory.createCollectorContext(
-                            outputPackageName, baseClass, collectors, generatedAnnotation);
+                            outputPackageName, baseClass, collectors, annotationMap);
             final var collectorContainerCode =
                     typeSpecConverter.convert(outputPackageName, collectorContainer);
             collectorsCode.add(collectorContainerCode);

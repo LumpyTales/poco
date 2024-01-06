@@ -9,22 +9,27 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * class will create annotation which should be used to mark class as generated
+ * class will create annotation which should be used in generated classes
  */
-public class GeneratedAnnotationFactory {
+public class AnnotationFactory {
 
     /**
-     * creates an annotation which should be used to mark class as generated
-     * @param generatedAnnotation {@code null} or annotation class used to create annotation definition
-     * @return annotation which should be used to mark class as generated
+     * creates an annotation which should be used in the generated classes
+     * @param annotation {@code null} or annotation class used to create annotation definition
+     * @return annotation which should be used in the generated classes
      */
-    public AnnotationSpec create(@Nullable Class<? extends Annotation> generatedAnnotation) {
-        final var annotationClass =
-                Objects.requireNonNullElse(generatedAnnotation, Generated.class);
+    @Nullable
+    public AnnotationSpec create(
+            @Nullable Class<? extends Annotation> annotation, final AnnotationType type) {
+        final var annotationClass = Objects.requireNonNullElse(annotation, defaultAnnotation(type));
         return getAnnotation(annotationClass);
     }
 
+    @Nullable
     private AnnotationSpec getAnnotation(final Class<? extends Annotation> annotationClass) {
+        if (annotationClass == null) {
+            return null;
+        }
         final var builder = AnnotationSpec.builder(annotationClass);
 
         final var hasValueMethodOfTypeString =
@@ -40,5 +45,16 @@ public class GeneratedAnnotationFactory {
             builder.addMember("value", "$S", CollectorGenerator.class.getName());
         }
         return builder.build();
+    }
+
+    @Nullable
+    private static Class<? extends Annotation> defaultAnnotation(final AnnotationType type) {
+        if (type == AnnotationType.NULLABLE) {
+            return Nullable.class;
+        }
+        if (type == AnnotationType.GENERATED) {
+            return Generated.class;
+        }
+        return null;
     }
 }

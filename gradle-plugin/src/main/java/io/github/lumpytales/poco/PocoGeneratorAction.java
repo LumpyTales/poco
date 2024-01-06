@@ -41,6 +41,7 @@ public class PocoGeneratorAction {
      * @param additionalPackageOrClassNames additional package names or even full qualified class names
      * @param generateContext whether to create the collector context or only the poco-classes
      * @param generatedAnnotation annotation which should be used to mark classes as generated instead of the default one
+     * @param nullableAnnotation annotation which should be used to mark fields etc. as nullable
      * @param directory where to write the generated collector classes
      * @throws IOException in case collector classes cannot be created
      */
@@ -51,6 +52,7 @@ public class PocoGeneratorAction {
             @Nullable final List<String> additionalPackageOrClassNames,
             @Nullable final Boolean generateContext,
             @Nullable final Class<? extends Annotation> generatedAnnotation,
+            @Nullable final Class<? extends Annotation> nullableAnnotation,
             final Directory directory)
             throws IOException {
 
@@ -59,6 +61,7 @@ public class PocoGeneratorAction {
         params.setAdditionalPackageOrClassNames(additionalPackageOrClassNames);
         params.setGenerateContext(generateContext);
         params.setGeneratedAnnotation(generatedAnnotation);
+        params.setNullableAnnotation(nullableAnnotation);
 
         final var result = generator.generateFor(params);
 

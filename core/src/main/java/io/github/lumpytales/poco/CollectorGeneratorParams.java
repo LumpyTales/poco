@@ -28,6 +28,9 @@ public class CollectorGeneratorParams {
     /** annotation which should be used to mark classes as generated */
     @Nullable private Class<? extends Annotation> generatedAnnotation;
 
+    /** annotation which should be used to mark fields etc. as nullable */
+    @Nullable private Class<? extends Annotation> nullableAnnotation;
+
     /** whether to create the collector context or only the poco-classes */
     private Boolean generateContext = Boolean.TRUE;
 
@@ -77,6 +80,15 @@ public class CollectorGeneratorParams {
     public void setGeneratedAnnotation(
             @Nullable final Class<? extends Annotation> generatedAnnotation) {
         this.generatedAnnotation = generatedAnnotation;
+    }
+
+    /**
+     * annotation which should be used to mark fields etc. as nullable
+     * @param nullableAnnotation {@code null} or annotation to use. if {@code null} default annotation is used {@link Nullable}
+     */
+    public void setNullableAnnotation(
+            @Nullable final Class<? extends Annotation> nullableAnnotation) {
+        this.nullableAnnotation = nullableAnnotation;
     }
 
     /**

@@ -77,6 +77,7 @@ tasks.register<io.github.lumpytales.poco.PocoGenerator>("genOrder") {
     additionalPackageOrClassNames = listOf("com.other.package.Price") // usually only collector classes are generated for classes which exists in the same package as the base class. Here we can add additional package names or even full qualified class names
     generateContext = true // whether to create the collector context or only the poco-classes
     generatedAnnotation = "jakarta.annotation.Generated" // annotation which should be used to mark classes as generated
+    nullableAnnotation = "jakarta.annotation.Nullable" // annotation which should be used to mark fields etc. as nullable
 ```
 **Note:** In case you don't need the collector context class you can set the flag "generateContext" to false. 
 In such cases **you will have zero dependencies to this project** and don't have to add the dependency
@@ -85,8 +86,8 @@ dependencies {
     implementation("io.github.lumpytales.poco:core:0.1.0")
 }
 ```
-**Note:** In case you want to use your own generated annotation for the poco-classes, feel free to set the config 
-"generatedAnnotation" to a fully qualified class name which extends an annotation.
+**Note:** In case you want to use your own generated and nullable annotations for the poco-classes, feel free to set the config 
+"generatedAnnotation" and "nullableAnnotation" to a fully qualified class name which extends an annotation.
 
 In such cases **you will have zero dependencies to the jakarta project** and don't have to add the dependency
 ```kotlin
