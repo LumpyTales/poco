@@ -26,24 +26,30 @@ public final class TagCollector implements Function<Order, List<Tag>> {
     if(pojo == null) {
       return result;
     }
-    for(Product pojoProducts : pojo.getProducts()) {
-      if(pojoProducts == null) {
-        continue;
-      }
-      for(Tag pojoProductsTags : pojoProducts.getTags()) {
-        if(pojoProductsTags != null) {
-          result.add(pojoProductsTags);
+    if(pojo.getProducts() != null) {
+      for(Product pojoProducts : pojo.getProducts()) {
+        if(pojoProducts == null) {
+          continue;
+        }
+        if(pojoProducts.getTags() != null) {
+          for(Tag pojoProductsTags : pojoProducts.getTags()) {
+            if(pojoProductsTags != null) {
+              result.add(pojoProductsTags);
+            }
+          }
         }
       }
     }
-    for(Product pojoProducts : pojo.getProducts()) {
-      if(pojoProducts == null) {
-        continue;
-      }
-      if(pojoProducts.getGroupTags() != null) {
-        for(Tag pojoProductsGroupTags : pojoProducts.getGroupTags().values()) {
-          if(pojoProductsGroupTags != null) {
-            result.add(pojoProductsGroupTags);
+    if(pojo.getProducts() != null) {
+      for(Product pojoProducts1 : pojo.getProducts()) {
+        if(pojoProducts1 == null) {
+          continue;
+        }
+        if(pojoProducts1.getGroupTags() != null) {
+          for(Tag pojoProducts1GroupTags : pojoProducts1.getGroupTags().values()) {
+            if(pojoProducts1GroupTags != null) {
+              result.add(pojoProducts1GroupTags);
+            }
           }
         }
       }

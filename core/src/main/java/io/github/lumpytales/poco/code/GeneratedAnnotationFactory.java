@@ -5,6 +5,8 @@ import io.github.lumpytales.poco.CollectorGenerator;
 import jakarta.annotation.Generated;
 import jakarta.annotation.Nullable;
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * class will create annotation which should be used to mark class as generated
@@ -17,22 +19,26 @@ public class GeneratedAnnotationFactory {
      * @return annotation which should be used to mark class as generated
      */
     public AnnotationSpec create(@Nullable Class<? extends Annotation> generatedAnnotation) {
-        if (generatedAnnotation == null) {
-            return getDefaultAnnotation();
-        }
-
-        try {
-            final Class<?> annotationType = Class.forName(generatedAnnotation.getName());
-            return AnnotationSpec.builder(annotationType).build();
-        } catch (ClassNotFoundException e) {
-            // do nothing, just return default annotation!
-            return getDefaultAnnotation();
-        }
+        final var annotationClass =
+                Objects.requireNonNullElse(generatedAnnotation, Generated.class);
+        return getAnnotation(annotationClass);
     }
 
-    private AnnotationSpec getDefaultAnnotation() {
-        return AnnotationSpec.builder(Generated.class)
-                .addMember("value", "$S", CollectorGenerator.class.getName())
-                .build();
+    private AnnotationSpec getAnnotation(final Class<? extends Annotation> annotationClass) {
+        final var builder = AnnotationSpec.builder(annotationClass);
+
+        final var hasValueMethodOfTypeString =
+                Arrays.stream(annotationClass.getDeclaredMethods())
+                        .anyMatch(
+                                method ->
+                                        "value".equals(method.getName())
+                                                && method.getAnnotatedReturnType()
+                                                        .getType()
+                                                        .getTypeName()
+                                                        .contains(String.class.getName()));
+        if (hasValueMethodOfTypeString) {
+            builder.addMember("value", "$S", CollectorGenerator.class.getName());
+        }
+        return builder.build();
     }
 }

@@ -1,11 +1,13 @@
 package io.github.lumpytales.poco;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.gradle.api.DefaultTask;
@@ -129,7 +131,7 @@ public abstract class PocoGenerator extends DefaultTask {
     }
 
     private ClassLoader createClassLoader() throws TaskExecutionException {
-        final var urls = new ArrayList<URL>();
+        final var files = new HashSet<File>();
         try {
             final var sourceSets =
                     getProject()
@@ -139,15 +141,26 @@ public abstract class PocoGenerator extends DefaultTask {
 
             for (var sourceSet : sourceSets) {
                 for (var file : sourceSet.getCompileClasspath()) {
-                    urls.add(file.toURI().toURL());
+                    files.add(file);
                 }
                 for (var classesDir : sourceSet.getOutput().getClassesDirs()) {
-                    urls.add(classesDir.toURI().toURL());
+                    files.add(classesDir);
                 }
             }
-        } catch (UnknownDomainObjectException | MalformedURLException e) {
+        } catch (UnknownDomainObjectException e) {
             throw new TaskExecutionException(this, e);
         }
+
+        final var urls = new ArrayList<URL>();
+        for (var file : files) {
+            try {
+                final var url = file.toURI().toURL();
+                urls.add(url);
+            } catch (MalformedURLException e) {
+                throw new TaskExecutionException(this, e);
+            }
+        }
+
         return new URLClassLoader(urls.toArray(new URL[0]), getClass().getClassLoader());
     }
 }

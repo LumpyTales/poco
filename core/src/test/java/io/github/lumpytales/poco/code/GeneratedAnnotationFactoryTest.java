@@ -1,8 +1,9 @@
 package io.github.lumpytales.poco.code;
 
 import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.ClassName;
 import io.github.lumpytales.poco.CollectorGenerator;
+import io.github.lumpytales.poco.testclasses.Gen;
 import jakarta.annotation.Generated;
 import java.lang.annotation.Annotation;
 import java.util.stream.Stream;
@@ -30,7 +31,7 @@ class GeneratedAnnotationFactoryTest {
         final var result = cut.create(givenAnnotation);
 
         // then
-        Assertions.assertThat(result.type).isEqualTo(TypeName.get(expectedAnnotation));
+        Assertions.assertThat(result.type).isEqualTo(ClassName.get(expectedAnnotation));
     }
 
     @Test
@@ -47,8 +48,6 @@ class GeneratedAnnotationFactoryTest {
                                 .addMember("value", "$S", CollectorGenerator.class.getName())
                                 .build());
     }
-
-    @interface Gen {}
 
     private static Stream<Arguments> generatedAnnotationArguments() {
         return Stream.of(Arguments.of(null, Generated.class), Arguments.of(Gen.class, Gen.class));

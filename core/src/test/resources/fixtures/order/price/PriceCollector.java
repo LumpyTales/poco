@@ -26,24 +26,28 @@ public final class PriceCollector implements Function<Order, List<Price>> {
     if(pojo == null) {
       return result;
     }
-    for(Product pojoProducts : pojo.getProducts()) {
-      if(pojoProducts == null) {
-        continue;
-      }
-      Price pojoProductsPrice = pojoProducts.getPrice();
-      if(pojoProductsPrice != null) {
-        result.add(pojoProductsPrice);
+    if(pojo.getProducts() != null) {
+      for(Product pojoProducts : pojo.getProducts()) {
+        if(pojoProducts == null) {
+          continue;
+        }
+        Price pojoProductsPrice = pojoProducts.getPrice();
+        if(pojoProductsPrice != null) {
+          result.add(pojoProductsPrice);
+        }
       }
     }
-    for(Product pojoProducts : pojo.getProducts()) {
-      if(pojoProducts == null) {
-        continue;
-      }
-      Price pojoProductsPrice = pojoProducts.getPrice();
-      if(pojoProductsPrice != null) {
-        Price pojoProductsPriceTax = pojoProductsPrice.tax();
-        if(pojoProductsPriceTax != null) {
-          result.add(pojoProductsPriceTax);
+    if(pojo.getProducts() != null) {
+      for(Product pojoProducts1 : pojo.getProducts()) {
+        if(pojoProducts1 == null) {
+          continue;
+        }
+        Price pojoProducts1Price = pojoProducts1.getPrice();
+        if(pojoProducts1Price != null) {
+          Price pojoProducts1PriceTax = pojoProducts1Price.tax();
+          if(pojoProducts1PriceTax != null) {
+            result.add(pojoProducts1PriceTax);
+          }
         }
       }
     }

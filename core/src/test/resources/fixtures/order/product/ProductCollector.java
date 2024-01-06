@@ -25,9 +25,11 @@ public final class ProductCollector implements Function<Order, List<Product>> {
     if(pojo == null) {
       return result;
     }
-    for(Product pojoProducts : pojo.getProducts()) {
-      if(pojoProducts != null) {
-        result.add(pojoProducts);
+    if(pojo.getProducts() != null) {
+      for(Product pojoProducts : pojo.getProducts()) {
+        if(pojoProducts != null) {
+          result.add(pojoProducts);
+        }
       }
     }
     return result;
