@@ -60,13 +60,26 @@ tasks.register<io.github.lumpytales.poco.plugin.tasks.PocoGeneratorTask>("genera
 
 #### Configuration options
 ```kotlin
-    baseClass = "de.fun.Order" // class which contains classes to collect
-    outputPackageName = "de.funny.order" // package name which should be used for generated poco classes
-    classesToCollect = listOf("de.fun.Product", "de.fun.Amount") // fully qualified name of classes which should be collected
-    additionalPackageOrClassNames = listOf("com.other.package.Price") // usually only collector classes are generated for classes which exists in the same package as the base class. Here we can add additional package names or even full qualified class names
-    generateContext = true // whether to create the collector context or only the poco-classes
-    generatedAnnotation = "jakarta.annotation.Generated" // annotation which should be used to mark classes as generated
-    nullableAnnotation = "jakarta.annotation.Nullable" // annotation which should be used to mark fields etc. as nullable
+// class which contains classes to collect
+baseClass = "de.fun.Order"
+
+// package name which should be used for generated poco classes
+outputPackageName = "de.funny.order"
+
+// fully qualified name of classes which should be collected
+classesToCollect = listOf("de.fun.Product", "de.fun.Amount")
+
+// usually only collector classes are generated for classes which exists in the same package as the base class. Here we can add additional package names or even full qualified class names
+additionalPackageOrClassNames = listOf("com.other.package.Price")
+
+// whether to create the collector context or only the poco-classes
+generateContext = true
+
+// annotation which should be used to mark classes as generated
+generatedAnnotation = "jakarta.annotation.Generated"
+
+// annotation which should be used to mark fields etc. as nullable
+nullableAnnotation = "jakarta.annotation.Nullable" 
 ```
 **Note:** In case you don't need the collector context class you can set the flag "generateContext" to false. 
 In such cases **you will have zero dependencies to this project** and don't have to add the dependency
@@ -93,13 +106,18 @@ the context-implementation if you want to use pre-initialized poco-classes in so
 Folder-structure:
 ```text
 build
-|- generated-poco
-   |- de
-      |- funny
-         |- order
-            |- ProductCollector.java
-            |- TagCollector.java
-            |- CollectorContextImpl.java
+|- generated
+   |- sources
+      | - poco
+         |- src
+            |- main
+               |- java
+                  |- de
+                     |- funny
+                        |- order
+                           |- ProductCollector.java
+                           |- TagCollector.java
+                           |- CollectorContextImpl.java
 ```
 
 ### Limitations
