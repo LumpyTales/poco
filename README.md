@@ -120,8 +120,9 @@ build
                            |- CollectorContextImpl.java
 ```
 
-### Upcoming features
-#### [Container classes](https://github.com/LumpyTales/poco/issues/1)
+### Roadmap
+#### Q1 - 2024
+##### [Container classes](https://github.com/LumpyTales/poco/issues/1)
 Currently, there are some limitations according to the generated code. As the java-universe has a lot of different
 classes which act as container (like a List.class, Map.class, ...) for Pojos, not all can be supported.
 
@@ -132,7 +133,7 @@ Right now the following containers/wrappers are supported:
 ```
 In future there will be the possibility to inject additional or your own container classes.
 
-#### [Collector and Context Interface](https://github.com/LumpyTales/poco/issues/3)
+##### [Collector and Context Interface](https://github.com/LumpyTales/poco/issues/3)
 Currently, the collector-classes implement the standard interface "java.util.function.Function" 
 and the collector-context-classes a specific, project dependent, interface 
 "io.github.lumpytales.poco.core.CollectorContext". 
@@ -140,3 +141,9 @@ and the collector-context-classes a specific, project dependent, interface
 To get rid of this dependencies there should be an opportunity to allow the consumer of the plugin to define their own 
 class which gets implemented. Of course, it must follow a specific pattern, but in that way we can reduce the dependencies
 to this project to zero but keep full functionality!
+
+#### Q2 - 2024
+
+#### Q3 - 2024
+
+#### Q4 - 2024
