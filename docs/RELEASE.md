@@ -55,7 +55,7 @@ https://central.sonatype.org/publish-ea/publish-ea-guide/#publishing-your-compon
 This means that first of all we need to cleanup the old versions from the local maven repository, before we create 
 the necessary zip file for the current version.
 ```text
-rm ./poco-repository
+rm -r ./poco-repository
 ```
 Afterwards create the artifacts
 ```shell
@@ -84,10 +84,11 @@ First of all we need to create an account at
 https://plugins.gradle.org
 ```
 which can be done by login via github.
-Afterwards we have already an API Key and secret which can be used to directly publish the plugin via following command
+There we already got an API Key and secret which can be used to directly publish the plugin via following command
 ```shell
-./gradlew publishPlugins -Pgradle.publish.key=<key> -Pgradle.publish.secret=<secret>
+./gradlew publishPlugins
 ```
+but don't forget to add the "gradle.publish.key" and "gradle.publish.secret" to you gradle.properties ("~/.gradle/gradle.properties") beforehand.
 #### Release
 After the artifacts are published, we should release the artifacts to github. This can be done by running the following 
 task
