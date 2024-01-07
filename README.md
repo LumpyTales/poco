@@ -23,6 +23,14 @@ turn be used to carry out the inventory. However, you would first have to have t
 the product data for each use case. And this is where PoCo comes into play, which can achieve exactly this by 
 generating collector classes.
 
+## What's the reason to generate classes?
+
+Cause of the fact that classes are generated at build-time, there is no need for you to use reflection at runtime. This means that the performance will be much better at runtime and tracing errors will be easier. Beside that native-builds need no extra configuration.
+
+You also don't need to polute your pojos with custom annotations, using annotation processors, to generate your code. 
+
+Just take your pojos as they are and let PoCo do the rest.
+
 ## How can I use it?
 Currently, there is the possibility to integrate a gradle plugin into the build process which can generate the collector classes. 
 Alternatively, you could also write your own CLI by including the project as dependency.
