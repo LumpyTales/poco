@@ -23,11 +23,6 @@ turn be used to carry out the inventory. However, you would first have to have t
 the product data for each use case. And this is where PoCo comes into play, which can achieve exactly this by 
 generating collector classes.
 
-## Licensing
-
-This software is licensed under the MIT Licence. Note that poco has several dependencies which may have be bound to 
-other licenses than the MIT License. Note that using poco comes without any (legal) warranties.
-
 ## How can I use it?
 Currently, there is the possibility to integrate a gradle plugin into the build process which can generate the collector classes. 
 Alternatively, you could also write your own CLI by including the project as dependency.
@@ -132,6 +127,11 @@ build
                            |- TagCollector.java
                            |- CollectorContextImpl.java
 ```
+
+## Licensing
+
+This software is licensed under the MIT Licence. Note that poco has several dependencies which may have be bound to
+other licenses than the MIT License. Note that using poco comes without any (legal) warranties.
 
 ### Roadmap
 #### Q1 - 2024
