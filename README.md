@@ -135,6 +135,10 @@ other licenses than the MIT License. Note that using poco comes without any (leg
 
 [Copy of the license](./LICENSE)
 
+### Buy me a coffee
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/L4L8T31BW)
+
 ### Roadmap
 #### Q1 - 2024
 ##### [Container classes](https://github.com/LumpyTales/poco/issues/1)
