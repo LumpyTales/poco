@@ -8,7 +8,7 @@ pluginManagement {
 }
 
 plugins {
-    id("com.mooltiverse.oss.nyx") version "2.5.1"
+    id("com.mooltiverse.oss.nyx") version "2.5.2"
 }
 
 rootProject.name = "poco"
