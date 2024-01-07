@@ -6,7 +6,11 @@ These collector classes collect all objects of nested types of a base object.
 
 See the following sketch (not UML compliant) to get a (hopefully) better understanding what it is about.
 
-![Workflow sketch](./docs/workflow_sketch.svg)
+The following classes are some plain old java objects which represents a simplified order in an e-commerce.
+![Workflow sketch pojos](./docs/workflow_sketch_pojos.svg)
+
+When you use PoCo to generate the collector-classes based on the order, you will get the following generated.
+![Workflow sketch gen](./docs/workflow_sketch_gen.svg)
 
 ## Why could this be useful?
 It can be useful if you have to work with complex objects, but only certain types are of interest for your own use case.
