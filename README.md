@@ -4,6 +4,10 @@
 It is a framework that makes it possible to create so-called collector classes. 
 These collector classes collect all objects of nested types of a base object.
 
+See the following sketch to get a (hopefully) better understanding what's about.
+
+![Workflow sketch](./docs/workflow_sketch.svg)
+
 ## Why could this be useful?
 It can be useful if you have to work with complex objects, but only certain types are of interest for your own use case.
 
@@ -14,6 +18,11 @@ All of these use cases have their own basic objects in which products are used, 
 turn be used to carry out the inventory. However, you would first have to have the appropriate options for extracting 
 the product data for each use case. And this is where PoCo comes into play, which can achieve exactly this by 
 generating collector classes.
+
+## Licensing
+
+This software is licensed under the MIT Licence. Note that poco has several dependencies which may have be bound to 
+other licenses than the MIT License. Note that using poco comes without any (legal) warranties.
 
 ## How can I use it?
 Currently, there is the possibility to integrate a gradle plugin into the build process which can generate the collector classes. 

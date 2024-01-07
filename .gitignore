@@ -28,3 +28,4 @@
 **/build/
 !gradle/wrapper/*
 /poco-repository/
+**/*.bkp
