@@ -1,3 +1,5 @@
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/L4L8T31BW)
+
 # PoCo - Pojo Collector 
 
 ## What is it?
@@ -134,10 +136,6 @@ This software is licensed under the MIT Licence. Note that poco has several depe
 other licenses than the MIT License. Note that using poco comes without any (legal) warranties.
 
 [Copy of the license](./LICENSE)
-
-### Buy me a coffee
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/L4L8T31BW)
 
 ### Roadmap
 #### Q1 - 2024
