@@ -4,7 +4,7 @@
 It is a framework that makes it possible to create so-called collector classes. 
 These collector classes collect all objects of nested types of a base object.
 
-See the following sketch to get a (hopefully) better understanding what's about.
+See the following sketch (not UML compliant) to get a (hopefully) better understanding what it is about.
 
 ![Workflow sketch](./docs/workflow_sketch.svg)
 
