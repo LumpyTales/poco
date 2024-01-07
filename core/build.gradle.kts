@@ -68,6 +68,19 @@ publishing {
                     developerConnection = "scm:git:ssh://github.com/LumpyTales/poco.git"
                     url = "http://github.com/LumpyTales/poco"
                 }
+                licenses {
+                    license {
+                        name = "MIT License"
+                        url = "https://opensource.org/license/MIT/"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "lumpytales"
+                        name = "LumpyTales"
+                        email = "64349444+LumpyTales@users.noreply.github.com"
+                    }
+                }
             }
         }
     }
