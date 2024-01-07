@@ -30,7 +30,7 @@ Alternatively, you could also write your own CLI by including the project as dep
 ### Gradle plugin
 To get started with the gradle plugin you should add it to your build.gradle in the plugins section.
 
-### Plugin configuration
+#### Plugin configuration
 ```kotlin
 plugins {
     id("io.github.lumpytales.poco.gradle-plugin") version "0.1.0"
@@ -53,7 +53,7 @@ java.sourceSets["main"].java {
 }
 ```
 
-### Task configuration
+#### Task configuration
 Then you are good to go and can add your own tasks to generate poco-classes.
 ```kotlin
 tasks.register<io.github.lumpytales.poco.plugin.tasks.PocoGeneratorTask>("generateForOrder") {
@@ -66,7 +66,7 @@ tasks.register<io.github.lumpytales.poco.plugin.tasks.PocoGeneratorTask>("genera
 }
 ```
 
-#### Configuration options
+##### Configuration options
 ```kotlin
 // class which contains classes to collect
 baseClass = "de.fun.Order"
@@ -135,9 +135,9 @@ other licenses than the MIT License. Note that using poco comes without any (leg
 
 [Copy of the license](./LICENSE)
 
-### Roadmap
-#### Q1 - 2024
-##### [Container classes](https://github.com/LumpyTales/poco/issues/1)
+## Roadmap
+### Q1 - 2024
+#### [Container classes](https://github.com/LumpyTales/poco/issues/1)
 Currently, there are some limitations according to the generated code. As the java-universe has a lot of different
 classes which act as container (like a List.class, Map.class, ...) for Pojos, not all can be supported.
 
@@ -148,7 +148,7 @@ Right now the following containers/wrappers are supported:
 ```
 In future there will be the possibility to inject additional or your own container classes.
 
-##### [Collector and Context Interface](https://github.com/LumpyTales/poco/issues/3)
+#### [Collector and Context Interface](https://github.com/LumpyTales/poco/issues/3)
 Currently, the collector-classes implement the standard interface "java.util.function.Function" 
 and the collector-context-classes a specific, project dependent, interface 
 "io.github.lumpytales.poco.core.CollectorContext". 
