@@ -94,5 +94,5 @@ After the artifacts are published, we should release the artifacts to github. Th
 task
 ```shell
 ./gradlew release
-git push
+git push --tags
 ```
