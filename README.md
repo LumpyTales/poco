@@ -133,6 +133,8 @@ build
 This software is licensed under the MIT Licence. Note that poco has several dependencies which may have be bound to
 other licenses than the MIT License. Note that using poco comes without any (legal) warranties.
 
+[Copy of the license](./LICENSE)
+
 ### Roadmap
 #### Q1 - 2024
 ##### [Container classes](https://github.com/LumpyTales/poco/issues/1)
