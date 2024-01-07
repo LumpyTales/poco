@@ -128,13 +128,6 @@ build
                            |- CollectorContextImpl.java
 ```
 
-## Licensing
-
-This software is licensed under the MIT Licence. Note that poco has several dependencies which may have be bound to
-other licenses than the MIT License. Note that using poco comes without any (legal) warranties.
-
-[Copy of the license](./LICENSE)
-
 ## Roadmap
 ### Q1 - 2024
 #### [Container classes](https://github.com/LumpyTales/poco/issues/1)
@@ -157,8 +150,16 @@ To get rid of this dependencies there should be an opportunity to allow the cons
 class which gets implemented. Of course, it must follow a specific pattern, but in that way we can reduce the dependencies
 to this project to zero but keep full functionality!
 
-#### Q2 - 2024
+### Q2 - 2024
 
-#### Q3 - 2024
+### Q3 - 2024
 
-#### Q4 - 2024
+### Q4 - 2024
+
+## Licensing
+
+This software is licensed under the MIT Licence. Note that poco has several dependencies which may have be bound to
+other licenses than the MIT License. Note that using poco comes without any (legal) warranties.
+
+[Copy of the license](./LICENSE)
+
