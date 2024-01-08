@@ -24,6 +24,14 @@ public final class CollectorContextImpl implements CollectorContext<Tag> {
   private final Map<Class<?>, Function<Tag, ?>> collectorMap = Map.of(String.class, new StringCollector(), Integer.class, new IntegerCollector(), Long.class, new LongCollector());
 
   /**
+   * @return the base class
+   */
+  @Override
+  public Class<Tag> getBaseClass() {
+    return Tag.class;
+  }
+
+  /**
    * @return list of classes which can be collected from base class
    */
   @Override

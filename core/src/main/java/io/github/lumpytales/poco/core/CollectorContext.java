@@ -9,6 +9,11 @@ import java.util.function.Function;
  * @param <B> base class to collect from
  */
 public interface CollectorContext<B> {
+    /**
+     * get the base class
+     * @return the base class
+     */
+    Class<B> getBaseClass();
 
     /**
      * get the list of classes which can be collected from base class

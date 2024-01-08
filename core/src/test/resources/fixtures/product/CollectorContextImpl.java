@@ -23,6 +23,14 @@ public final class CollectorContextImpl implements CollectorContext<Product> {
   private final Map<Class<?>, Function<Product, ?>> collectorMap = Map.of(Price.class, new PriceCollector(), Tag.class, new TagCollector());
 
   /**
+   * @return the base class
+   */
+  @Override
+  public Class<Product> getBaseClass() {
+    return Product.class;
+  }
+
+  /**
    * @return list of classes which can be collected from base class
    */
   @Override

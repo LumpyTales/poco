@@ -216,6 +216,16 @@ public class CollectorFactory {
                         rootClassType,
                         ParameterizedTypeName.get(JAVA_UTIL_LIST, genericTypeForCollectorClass));
 
+        final var getBaseClassMethodJavadoc =
+                CodeBlock.builder().add("@return the base class").build();
+        final var getBaseClassMethod =
+                MethodSpec.methodBuilder("getBaseClass")
+                        .addModifiers(Modifier.PUBLIC)
+                        .addAnnotation(Override.class)
+                        .returns(ParameterizedTypeName.get(Class.class, baseClass))
+                        .addStatement("return $T.class", baseClass)
+                        .addJavadoc(getBaseClassMethodJavadoc);
+
         final var getAvailableCollectiblesMethodJavadoc =
                 CodeBlock.builder()
                         .add("@return list of classes which can be collected from base class")
@@ -270,6 +280,7 @@ public class CollectorFactory {
                 .addAnnotation(generatedAnnotation)
                 .addField(listOfGenericWildcardClassField)
                 .addField(mapOfCollectorsField)
+                .addMethod(getBaseClassMethod.build())
                 .addMethod(getAvailableCollectiblesMethod.build())
                 .addMethod(getCollectorMethod.build())
                 .addSuperinterface(collectorContainerInterface)
