@@ -231,7 +231,7 @@ public class CollectorFactory {
                         .add("@return list of classes which can be collected from base class")
                         .build();
         final var getAvailableCollectiblesMethod =
-                MethodSpec.methodBuilder("get")
+                MethodSpec.methodBuilder("getCollectibles")
                         .addModifiers(Modifier.PUBLIC)
                         .addAnnotation(Override.class)
                         .returns(listOfGenericWildcardClass)
@@ -247,7 +247,7 @@ public class CollectorFactory {
                                 Function.class)
                         .build();
         final var getCollectorMethod =
-                MethodSpec.methodBuilder("get")
+                MethodSpec.methodBuilder("getCollector")
                         .addModifiers(Modifier.PUBLIC)
                         .addAnnotation(Override.class)
                         .addAnnotation(nullableAnnotation)

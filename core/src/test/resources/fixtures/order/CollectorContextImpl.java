@@ -35,7 +35,7 @@ public final class CollectorContextImpl implements CollectorContext<Order> {
    * @return list of classes which can be collected from base class
    */
   @Override
-  public List<Class<?>> get() {
+  public List<Class<?>> getCollectibles() {
     return collectibles;
   }
 
@@ -45,7 +45,7 @@ public final class CollectorContextImpl implements CollectorContext<Order> {
   @Override
   @Nullable
   @SuppressWarnings("unchecked")
-  public <C> Function<Order, List<C>> get(final Class<C> clazz) {
+  public <C> Function<Order, List<C>> getCollector(final Class<C> clazz) {
     return (Function<Order, List<C>>) collectorMap.get(clazz);
   }
 }

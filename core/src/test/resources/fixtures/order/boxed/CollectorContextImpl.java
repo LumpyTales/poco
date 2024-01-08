@@ -35,7 +35,7 @@ public final class CollectorContextImpl implements CollectorContext<Tag> {
    * @return list of classes which can be collected from base class
    */
   @Override
-  public List<Class<?>> get() {
+  public List<Class<?>> getCollectibles() {
     return collectibles;
   }
 
@@ -45,7 +45,7 @@ public final class CollectorContextImpl implements CollectorContext<Tag> {
   @Override
   @Nullable
   @SuppressWarnings("unchecked")
-  public <C> Function<Tag, List<C>> get(final Class<C> clazz) {
+  public <C> Function<Tag, List<C>> getCollector(final Class<C> clazz) {
     return (Function<Tag, List<C>>) collectorMap.get(clazz);
   }
 }
