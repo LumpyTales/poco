@@ -212,7 +212,9 @@ public class CollectorFactory {
                 ParameterizedTypeName.get(ClassName.get(Class.class), genericTypeForCollectorClass);
         final var collectorReturnType =
                 ParameterizedTypeName.get(
-                        ClassName.get(Function.class), rootClassType, genericTypeForCollectorClass);
+                        ClassName.get(Function.class),
+                        rootClassType,
+                        ParameterizedTypeName.get(JAVA_UTIL_LIST, genericTypeForCollectorClass));
 
         final var getAvailableCollectiblesMethodJavadoc =
                 CodeBlock.builder()
@@ -247,7 +249,7 @@ public class CollectorFactory {
                         .returns(collectorReturnType)
                         .addParameter(genericClass, getMethodParameterName, Modifier.FINAL)
                         .addCode(
-                                "return ($T<$T, C>) $N.get($N);",
+                                "return ($T<$T, List<C>>) $N.get($N);",
                                 Function.class,
                                 baseClass,
                                 collectorsFieldName,

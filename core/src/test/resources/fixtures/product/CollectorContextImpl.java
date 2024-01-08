@@ -36,7 +36,7 @@ public final class CollectorContextImpl implements CollectorContext<Product> {
   @Override
   @Nullable
   @SuppressWarnings("unchecked")
-  public <C> Function<Product, C> get(final Class<C> clazz) {
-    return (Function<Product, C>) collectorMap.get(clazz);
+  public <C> Function<Product, List<C>> get(final Class<C> clazz) {
+    return (Function<Product, List<C>>) collectorMap.get(clazz);
   }
 }

@@ -35,7 +35,7 @@ public final class CollectorContextImpl implements CollectorContext<Order> {
   @Override
   @Nullable
   @SuppressWarnings("unchecked")
-  public <C> Function<Order, C> get(final Class<C> clazz) {
-    return (Function<Order, C>) collectorMap.get(clazz);
+  public <C> Function<Order, List<C>> get(final Class<C> clazz) {
+    return (Function<Order, List<C>>) collectorMap.get(clazz);
   }
 }

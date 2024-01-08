@@ -23,5 +23,5 @@ public interface CollectorContext<B> {
      * @param clazz of object which should be collected
      */
     @Nullable
-    <C> Function<B, C> get(final Class<C> clazz);
+    <C> Function<B, List<C>> get(final Class<C> clazz);
 }
