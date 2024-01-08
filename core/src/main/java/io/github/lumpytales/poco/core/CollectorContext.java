@@ -19,7 +19,7 @@ public interface CollectorContext<B> {
      * get the list of classes which can be collected from base class
      * @return list of classes which can be collected from base class
      */
-    List<Class<?>> get();
+    List<Class<?>> getCollectables();
 
     /**
      * get the collector for {@code clazz}
@@ -28,5 +28,5 @@ public interface CollectorContext<B> {
      * @param clazz of object which should be collected
      */
     @Nullable
-    <C> Function<B, List<C>> get(final Class<C> clazz);
+    <C> Function<B, List<C>> getCollector(final Class<C> clazz);
 }

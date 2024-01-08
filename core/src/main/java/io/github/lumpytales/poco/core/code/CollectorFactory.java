@@ -144,7 +144,7 @@ public class CollectorFactory {
         final var generatedAnnotation = annotationMap.get(AnnotationType.GENERATED);
         final var nullableAnnotation = annotationMap.get(AnnotationType.NULLABLE);
 
-        final CodeBlock.Builder collectiblesListInitializer = CodeBlock.builder().add("List.of(");
+        final CodeBlock.Builder collectablesListInitializer = CodeBlock.builder().add("List.of(");
         final CodeBlock.Builder collectorMapInitializer = CodeBlock.builder().add("Map.of(");
 
         for (Iterator<TypeSpec> iterator = new LinkedHashSet<>(collectors).iterator();
@@ -157,15 +157,15 @@ public class CollectorFactory {
             final var classToCollect =
                     ((ParameterizedTypeName) classToCollectListType).typeArguments.getFirst();
 
-            collectiblesListInitializer.add("$T.class", classToCollect);
+            collectablesListInitializer.add("$T.class", classToCollect);
             collectorMapInitializer.add("$T.class, new $T()", classToCollect, collectorName);
 
             if (iterator.hasNext()) {
-                collectiblesListInitializer.add(", ");
+                collectablesListInitializer.add(", ");
                 collectorMapInitializer.add(", ");
             }
         }
-        collectiblesListInitializer.add(")");
+        collectablesListInitializer.add(")");
         collectorMapInitializer.add(")");
 
         final var rootClassType = TypeVariableName.get(baseClass);
@@ -184,15 +184,15 @@ public class CollectorFactory {
 
         final var listOfGenericWildcardClass =
                 ParameterizedTypeName.get(JAVA_UTIL_LIST, genericWildcardClass);
-        final var collectiblesFieldName = "collectibles";
+        final var collectablesFieldName = "collectables";
 
         final var listOfGenericWildcardClassField =
                 FieldSpec.builder(
                                 listOfGenericWildcardClass,
-                                collectiblesFieldName,
+                                collectablesFieldName,
                                 Modifier.PRIVATE,
                                 Modifier.FINAL)
-                        .initializer(collectiblesListInitializer.build())
+                        .initializer(collectablesListInitializer.build())
                         .build();
 
         final var mapOfCollectors =
@@ -226,17 +226,17 @@ public class CollectorFactory {
                         .addStatement("return $T.class", baseClass)
                         .addJavadoc(getBaseClassMethodJavadoc);
 
-        final var getAvailableCollectiblesMethodJavadoc =
+        final var getAvailableCollectablesMethodJavadoc =
                 CodeBlock.builder()
                         .add("@return list of classes which can be collected from base class")
                         .build();
-        final var getAvailableCollectiblesMethod =
-                MethodSpec.methodBuilder("getCollectibles")
+        final var getAvailableCollectablesMethod =
+                MethodSpec.methodBuilder("getCollectables")
                         .addModifiers(Modifier.PUBLIC)
                         .addAnnotation(Override.class)
                         .returns(listOfGenericWildcardClass)
-                        .addStatement("return $N", collectiblesFieldName)
-                        .addJavadoc(getAvailableCollectiblesMethodJavadoc);
+                        .addStatement("return $N", collectablesFieldName)
+                        .addJavadoc(getAvailableCollectablesMethodJavadoc);
 
         final var getMethodParameterName = "clazz";
         final var getCollectorMethodJavadoc =
@@ -281,7 +281,7 @@ public class CollectorFactory {
                 .addField(listOfGenericWildcardClassField)
                 .addField(mapOfCollectorsField)
                 .addMethod(getBaseClassMethod.build())
-                .addMethod(getAvailableCollectiblesMethod.build())
+                .addMethod(getAvailableCollectablesMethod.build())
                 .addMethod(getCollectorMethod.build())
                 .addSuperinterface(collectorContainerInterface)
                 .addJavadoc(classJavadoc)

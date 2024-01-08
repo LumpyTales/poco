@@ -19,7 +19,7 @@ import java.util.function.Function;
  */
 @Generated("io.github.lumpytales.poco.core.CollectorGenerator")
 public final class CollectorContextImpl implements CollectorContext<Tag> {
-  private final List<Class<?>> collectibles = List.of(String.class, Integer.class, Long.class);
+  private final List<Class<?>> collectables = List.of(String.class, Integer.class, Long.class);
 
   private final Map<Class<?>, Function<Tag, ?>> collectorMap = Map.of(String.class, new StringCollector(), Integer.class, new IntegerCollector(), Long.class, new LongCollector());
 
@@ -35,8 +35,8 @@ public final class CollectorContextImpl implements CollectorContext<Tag> {
    * @return list of classes which can be collected from base class
    */
   @Override
-  public List<Class<?>> getCollectibles() {
-    return collectibles;
+  public List<Class<?>> getCollectables() {
+    return collectables;
   }
 
   /**
