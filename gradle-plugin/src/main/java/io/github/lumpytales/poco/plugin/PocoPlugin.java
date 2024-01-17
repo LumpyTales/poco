@@ -12,9 +12,7 @@ public class PocoPlugin implements Plugin<Project> {
 
     @Override
     public void apply(final Project project) {
-        project.getPlugins().apply(JavaPlugin.class);
-        project.getPlugins().apply(PocoPlugin.class);
-
+        project.getPluginManager().apply(JavaPlugin.class);
         project.getTasks().register("generateForAll", PocoGenerateAllTask.class);
     }
 }

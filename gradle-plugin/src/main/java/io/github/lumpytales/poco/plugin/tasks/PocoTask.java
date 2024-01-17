@@ -1,7 +1,5 @@
 package io.github.lumpytales.poco.plugin.tasks;
 
-import java.util.List;
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.gradle.api.DefaultTask;
@@ -22,16 +20,6 @@ public abstract class PocoTask extends DefaultTask {
                     .getBuildDirectory()
                     .dir("generated/sources/poco/src/main/java")
                     .get();
-
-    /**
-     * constructor
-     */
-    public PocoTask() {
-        final var compileJavaTask = getProject().getTasks().findByName("compileJava");
-        Objects.requireNonNull(compileJavaTask);
-
-        this.setDependsOn(List.of(compileJavaTask));
-    }
 
     /**
      * where to write the generated collector classes
