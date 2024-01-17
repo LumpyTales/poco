@@ -171,3 +171,98 @@ other licenses than the MIT License. Note that using poco comes without any (leg
 
 [Copy of the license](./LICENSE)
 
+## Complex examples
+
+### Use generated sources as base for PoCo
+In some cases you will have the need to generate pojos by some kind of schema or definition, like an openapi.
+Therefore, you will have the need to first generate the source, compile those classes and add them to the classpath so
+that PoCo is able to recognize them on the classpath.
+
+Below you will find an example build.gradle.kts on how to achieve that by adding a separate source set
+```kotlin
+import io.github.lumpytales.poco.plugin.tasks.PocoGeneratorTask
+
+plugins {
+    id("java")
+    id("org.openapi.generator") version "7.2.0"
+    id("io.github.lumpytales.poco.gradle-plugin")
+}
+
+group = "io.github.lumpytales.poco.sample"
+version = "0.1.0"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+// create a new source set used to compile the openapi generated classes first
+sourceSets {
+    create("openApi") {
+        java.srcDirs(project.layout.buildDirectory.dir("generated/sources/petstore/src/main/java"))
+    }
+}
+
+// add to the main source set - PoCo generated classes
+java.sourceSets["main"].java {
+    srcDirs(
+        project.layout.buildDirectory.dir("generated/sources/poco/src/main/java")
+    )
+}
+
+
+dependencies {
+    implementation("io.github.lumpytales.poco:core:1.0.0")
+    
+    // add openApi source set dependencies
+    "openApiImplementation"("jakarta.annotation:jakarta.annotation-api:3.0.0-M1")
+    "openApiImplementation"("com.fasterxml.jackson.core:jackson-annotations:2.13.0")
+    // add openApi source set itself dependencies
+    implementation(sourceSets.named("openApi").get().output)
+
+    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0-M1")
+    
+    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+// generate openapi models from petstore.yaml
+openApiGenerate {
+    generatorName.set("java")
+    inputSpec.set(layout.projectDirectory.dir("specs").file("petstore.yaml").asFile.absolutePath)
+    outputDir.set(layout.buildDirectory.dir("generated/sources/petstore").get().asFile.absolutePath)
+
+    apiPackage.set("")
+    invokerPackage.set("")
+    modelPackage.set("com.petstore.models")
+
+    globalProperties.set(mapOf("apis" to "false", "invoker" to "", "models" to ""))
+    generateModelTests.set(false)
+    generateModelDocumentation.set(false)
+    generateApiTests.set(false)
+    generateApiDocumentation.set(false)
+
+    configOptions.put("dateLibrary", "java8")
+    configOptions.put("annotationLibrary", "none")
+    configOptions.put("library", "native")
+    configOptions.put("useJakartaEe", "true")
+}
+// compiling open api sources depends on generation of the files
+tasks.getByName("compileOpenApiJava").dependsOn(tasks.getByName("openApiGenerate"))
+
+// create a PoCo task
+tasks.register<PocoGeneratorTask>("generateForPet") {
+    baseClass = "com.petstore.models.Pet"
+    outputPackageName = "com.petstore.collectors"
+}
+// PoCo task depends on the compiled openApi classes 
+tasks.getByName("generateForAll").dependsOn(tasks.getByName("openApiClasses"))
+// compile java depends of course on the PoCo tasks
+tasks.withType<PocoTask>().configureEach {
+    tasks.getByName("compileJava").dependsOn(this)
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+```
