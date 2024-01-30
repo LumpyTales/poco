@@ -44,7 +44,7 @@ dependencies {
 
     testImplementation("org.assertj:assertj-core:3.25.2")
 
-    testImplementation("org.mockito:mockito-core:5.9.0")
+    testImplementation("org.mockito:mockito-core:5.10.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.10.0")
 
     spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0")
