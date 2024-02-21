@@ -9,6 +9,10 @@
         <Bug code="EI" />
     </Match>
     <Match>
+        <!-- This rule EI_EXPOSE_REP forces, together with EI_EXPOSE_REP2, to implement duplicate code -->
+        <Bug code="EI2" />
+    </Match>
+    <Match>
         <!-- This rule CT_CONSTRUCTOR_THROW is not necessary -->
         <Bug code="CT" />
         <Class name="io.github.lumpytales.poco.core.CollectorGeneratorParams" />

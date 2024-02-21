@@ -10,6 +10,7 @@ import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeVariableName;
 import com.squareup.javapoet.WildcardTypeName;
 import io.github.lumpytales.poco.core.CollectorContext;
+import io.github.lumpytales.poco.core.code.annotation.AnnotationType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;

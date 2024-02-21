@@ -5,6 +5,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
+import io.github.lumpytales.poco.core.code.annotation.AnnotationType;
 import io.github.lumpytales.poco.core.testclasses.Order;
 import io.github.lumpytales.poco.core.testclasses.Product;
 import jakarta.annotation.Generated;

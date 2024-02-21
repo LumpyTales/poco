@@ -6,10 +6,10 @@ import io.github.lumpytales.poco.core.analysis.collector.ClassCollectorDetector;
 import io.github.lumpytales.poco.core.analysis.hierachy.ClassFieldHierarchyGenerator;
 import io.github.lumpytales.poco.core.analysis.metadata.ClassMetaDataProvider;
 import io.github.lumpytales.poco.core.analysis.path.FieldPathGenerator;
-import io.github.lumpytales.poco.core.code.AnnotationFactory;
-import io.github.lumpytales.poco.core.code.AnnotationType;
 import io.github.lumpytales.poco.core.code.CollectorFactory;
-import io.github.lumpytales.poco.core.code.CollectorMethodBodyGenerator;
+import io.github.lumpytales.poco.core.code.annotation.AnnotationFactory;
+import io.github.lumpytales.poco.core.code.annotation.AnnotationType;
+import io.github.lumpytales.poco.core.code.blocks.CollectorCodeBlockFactory;
 import io.github.lumpytales.poco.core.config.CollectorGeneratorConfig;
 import io.github.lumpytales.poco.core.file.TypeSpecConverter;
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class CollectorGenerator {
     private final ClassMetaDataProvider classMetaDataProvider;
     private final ClassFieldHierarchyGenerator classFieldHierarchyGenerator;
     private final FieldPathGenerator fieldPathGenerator;
-    private final CollectorMethodBodyGenerator collectorMethodBodyGenerator;
+    private final CollectorCodeBlockFactory collectorCodeBlockFactory;
     private final CollectorFactory collectorFactory;
     private final ClassCollectorDetector classCollectorDetector;
     private final TypeSpecConverter typeSpecConverter;
@@ -54,7 +54,7 @@ public class CollectorGenerator {
         this.classMetaDataProvider = config.getClassMetaDataProvider();
         this.classFieldHierarchyGenerator = config.getClassFieldHierarchyGenerator();
         this.fieldPathGenerator = config.getFieldPathGenerator();
-        this.collectorMethodBodyGenerator = config.getCollectorMethodBodyGenerator();
+        this.collectorCodeBlockFactory = config.getCollectorCodeBlockFactory();
         this.collectorFactory = config.getCollectorFactory();
         this.classCollectorDetector = config.getClassCollectorDetector();
         this.typeSpecConverter = config.getTypeSpecConverter();
@@ -107,7 +107,7 @@ public class CollectorGenerator {
             final var paths = fieldPathGenerator.createPathsTo(classHierarchy, collectorClass);
 
             // based on the paths details we can generate the content of the collector class method
-            final var codeBlocks = collectorMethodBodyGenerator.generate(paths);
+            final var codeBlocks = collectorCodeBlockFactory.create(paths);
             if (codeBlocks.isEmpty()) {
                 // no content for class - so collector is not necessary
                 // usually when the class has no nested classes of same package
@@ -116,7 +116,7 @@ public class CollectorGenerator {
             // create the class with the generate content for collector method
             final var collector =
                     collectorFactory.createCollector(
-                            collectorMethodBodyGenerator.getBaseClassObjectName(),
+                            collectorCodeBlockFactory.getBaseClassObjectName(),
                             baseClass,
                             collectorClass,
                             codeBlocks,

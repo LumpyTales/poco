@@ -1,4 +1,4 @@
-package io.github.lumpytales.poco.core.code;
+package io.github.lumpytales.poco.core.code.annotation;
 
 /**
  * define the type of annotation

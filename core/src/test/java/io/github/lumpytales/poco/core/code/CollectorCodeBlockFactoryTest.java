@@ -2,6 +2,9 @@ package io.github.lumpytales.poco.core.code;
 
 import com.squareup.javapoet.CodeBlock;
 import io.github.lumpytales.poco.core.analysis.metadata.FieldMetaData;
+import io.github.lumpytales.poco.core.code.blocks.CollectorCodeBlockFactory;
+import io.github.lumpytales.poco.core.code.blocks.ContainerClassCodeBlockFactory;
+import io.github.lumpytales.poco.core.code.blocks.FieldNameFactory;
 import io.github.lumpytales.poco.core.testclasses.Order;
 import io.github.lumpytales.poco.core.testclasses.Price;
 import io.github.lumpytales.poco.core.testclasses.Product;
@@ -11,11 +14,14 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * used to test {@link CollectorMethodBodyGenerator}
+ * used to test {@link CollectorCodeBlockFactory}
  */
-class CollectorMethodBodyGeneratorTest {
+class CollectorCodeBlockFactoryTest {
 
-    private final CollectorMethodBodyGenerator cut = new CollectorMethodBodyGenerator();
+    // TODO split in separate testcases
+    private final CollectorCodeBlockFactory cut =
+            new CollectorCodeBlockFactory(
+                    new FieldNameFactory(), new ContainerClassCodeBlockFactory());
 
     @Test
     void When_base_class_object_name_retrieved_Then_expect_it_to_be_pojo() {
@@ -43,7 +49,7 @@ class CollectorMethodBodyGeneratorTest {
         final var paths = List.of(path);
 
         // when
-        final var result = cut.generate(paths);
+        final var result = cut.create(paths);
 
         // then
         Assertions.assertThat(result).hasSize(1);
@@ -102,7 +108,7 @@ class CollectorMethodBodyGeneratorTest {
         final var paths = List.of(pricePath, taxPath, skontoAmountPath);
 
         // when
-        final var result = cut.generate(paths);
+        final var result = cut.create(paths);
 
         // then
         Assertions.assertThat(result).hasSize(3);
