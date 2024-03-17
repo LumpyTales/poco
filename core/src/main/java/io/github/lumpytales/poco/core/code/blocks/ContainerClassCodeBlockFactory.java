@@ -1,15 +1,12 @@
 package io.github.lumpytales.poco.core.code.blocks;
 
 import com.squareup.javapoet.CodeBlock;
-import java.util.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class ContainerClassCodeBlockFactory {
-
-    private final Set<Class<?>> CLASSES_BEHAVES_LIKE_LISTS =
-            Set.of(List.class, Set.class, Queue.class, Deque.class);
-    private final Set<Class<?>> CLASSES_BEHAVES_LIKE_MAPS = Set.of(Map.class);
 
     public CodeBlock create(
             final WrappedInBodyCodeBlock wrappedInBodyCodeBlock,
@@ -20,8 +17,7 @@ public class ContainerClassCodeBlockFactory {
             final String objectName) {
 
         final var codeBlockBuilder = CodeBlock.builder();
-        if (CLASSES_BEHAVES_LIKE_LISTS.stream()
-                .anyMatch(classBehavesLike -> classBehavesLike.isAssignableFrom(wrappedIn))) {
+        if (wrappedIn.getTypeParameters().length == 1) {
             codeBlockBuilder
                     .beginControlFlow("if($N.$N() != null)", parentObjectName, getter)
                     .beginControlFlow(
@@ -31,8 +27,7 @@ public class ContainerClassCodeBlockFactory {
                             parentObjectName,
                             getter)
                     .build();
-        } else if (CLASSES_BEHAVES_LIKE_MAPS.stream()
-                .anyMatch(classBehavesLike -> classBehavesLike.isAssignableFrom(wrappedIn))) {
+        } else if (wrappedIn.getTypeParameters().length == 2) {
             codeBlockBuilder
                     .beginControlFlow("if($N.$N() != null)", parentObjectName, getter)
                     .beginControlFlow(
