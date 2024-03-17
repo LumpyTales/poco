@@ -1,4 +1,6 @@
 # PoCo - Pojo Collector 
+![QA core](https://github.com/LumpyTales/poco/actions/workflows/quality-assurance-core.yml/badge.svg) ![QA gradle-plugin](https://github.com/LumpyTales/poco/actions/workflows/quality-assurance-gradle-plugin.yml/badge.svg)
+
 
 ## What is it?
 It is a framework that makes it possible to create so-called collector classes. 
