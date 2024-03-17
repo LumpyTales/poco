@@ -1,4 +1,4 @@
-package io.github.lumpytales.poco.core.code;
+package io.github.lumpytales.poco.core.code.annotation;
 
 import com.squareup.javapoet.AnnotationSpec;
 import io.github.lumpytales.poco.core.CollectorGenerator;

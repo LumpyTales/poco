@@ -5,17 +5,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Will create the details which fields (of interest) exists in the class which is currently analyzed.
  */
+@Slf4j
 public class ClassMetaDataProvider {
 
     /**
@@ -63,8 +60,25 @@ public class ClassMetaDataProvider {
         for (final Field field : fields) {
             // in case of a list or map the real type is wrapped in parameter type and we need to
             // get that
-            var fieldClazz = field.getType();
+            Class<?> fieldClazz = field.getType();
             Class<?> wrapperClazz = null;
+
+            if (ParameterizedType.class.isAssignableFrom(field.getGenericType().getClass())) {
+
+                var type = (ParameterizedType) field.getGenericType();
+                if (type.getActualTypeArguments().length == 1) {
+                    fieldClazz = (Class<?>) type.getActualTypeArguments()[0];
+                } else if (type.getActualTypeArguments().length == 2) {
+                    fieldClazz = (Class<?>) type.getActualTypeArguments()[1];
+                } else {
+                    log.warn(
+                            "Skipping field [{}] as we can't collect meta data for such types [{}]",
+                            field.getName(),
+                            field.getType());
+                    continue;
+                }
+                wrapperClazz = field.getType();
+            }
 
             // in case of java-packages we shouldn't dive deeply into the structure
             if (baseClass.getPackageName().startsWith("java")) {
@@ -75,32 +89,21 @@ public class ClassMetaDataProvider {
             final var isComponentPrimitive =
                     fieldClazz.componentType() != null && fieldClazz.componentType().isPrimitive();
             if (fieldClazz.isPrimitive() || isComponentPrimitive) {
+                log.warn(
+                        "Skipping field [{}] as primitive fields are not supported!",
+                        field.getName());
                 continue;
             }
 
             if (Enum.class.isAssignableFrom(fieldClazz)) {
+                log.warn("Skipping field [{}] as enum fields are not supported!", field.getName());
                 continue;
             }
 
-            if (List.class.isAssignableFrom(fieldClazz)) {
-                var type = (ParameterizedType) field.getGenericType();
-
-                fieldClazz = (Class<?>) type.getActualTypeArguments()[0];
-                wrapperClazz = List.class;
-            }
-
-            if (Map.class.isAssignableFrom(fieldClazz)) {
-                var type = (ParameterizedType) field.getGenericType();
-
-                fieldClazz = (Class<?>) type.getActualTypeArguments()[1];
-                wrapperClazz = Map.class;
-            }
-
             // if not in the package of interest -> skip
-            final var currentFieldClazz = fieldClazz;
             final var relevantPackage =
                     packageNamePrefixes.stream()
-                            .filter(findRelevantPackageFor(currentFieldClazz))
+                            .filter(findRelevantPackageFor(fieldClazz))
                             .findAny();
             if (relevantPackage.isEmpty()) {
                 continue;
@@ -115,24 +118,20 @@ public class ClassMetaDataProvider {
                 Type getterReturnType = method.getGenericReturnType();
                 if (wrapperClazz != null
                         && getterReturnType
-                                instanceof ParameterizedType getterReturnParametrizedType) {
-                    if (List.class.isAssignableFrom(wrapperClazz)
-                            && List.class
-                                    .getTypeName()
-                                    .equals(
-                                            getterReturnParametrizedType
-                                                    .getRawType()
-                                                    .getTypeName())) {
+                                instanceof ParameterizedType getterReturnParametrizedType
+                        && wrapperClazz
+                                .getTypeName()
+                                .equals(getterReturnParametrizedType.getRawType().getTypeName())) {
+                    if (getterReturnParametrizedType.getActualTypeArguments().length == 1) {
                         getterReturnType = getterReturnParametrizedType.getActualTypeArguments()[0];
-                    }
-                    if (Map.class.isAssignableFrom(wrapperClazz)
-                            && Map.class
-                                    .getTypeName()
-                                    .equals(
-                                            getterReturnParametrizedType
-                                                    .getRawType()
-                                                    .getTypeName())) {
+                    } else if (getterReturnParametrizedType.getActualTypeArguments().length == 2) {
                         getterReturnType = getterReturnParametrizedType.getActualTypeArguments()[1];
+                    } else {
+                        log.warn(
+                                "Skipping field [{}] as we can't detect the getter [{}]",
+                                field.getName(),
+                                getterReturnType.getTypeName());
+                        continue;
                     }
                 }
 

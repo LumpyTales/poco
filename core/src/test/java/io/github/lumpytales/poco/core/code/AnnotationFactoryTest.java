@@ -3,6 +3,8 @@ package io.github.lumpytales.poco.core.code;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import io.github.lumpytales.poco.core.CollectorGenerator;
+import io.github.lumpytales.poco.core.code.annotation.AnnotationFactory;
+import io.github.lumpytales.poco.core.code.annotation.AnnotationType;
 import io.github.lumpytales.poco.core.testclasses.TestAnnotation;
 import jakarta.annotation.Generated;
 import jakarta.annotation.Nullable;

@@ -46,7 +46,7 @@ class ClassMetaDataProviderTest {
                 .extracting(Class::getSimpleName)
                 .containsExactly(
                         "Product", "String", "Price", "String", "Price", "Tag", "String", "String",
-                        "Tag", "Price", "Price");
+                        "Tag", "Price", "Price", "String");
         Assertions.assertThat(result.fieldMetaData())
                 .extracting(FieldMetaData::getFieldName)
                 .containsExactly(
@@ -60,6 +60,7 @@ class ClassMetaDataProviderTest {
                         "value",
                         "groupTags",
                         "total",
-                        "tax");
+                        "tax",
+                        "invoiceRefs");
     }
 }
