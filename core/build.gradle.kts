@@ -20,7 +20,7 @@ repositories {
 dependencies {
 
     implementation("com.squareup:javapoet:1.13.0")
-    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0-M1")
+    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
 
     compileOnly("org.projectlombok:lombok:1.18.32")
     annotationProcessor("org.projectlombok:lombok:1.18.32")
