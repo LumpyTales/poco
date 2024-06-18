@@ -4,7 +4,7 @@ plugins {
     signing
     id("java-library")
     id("maven-publish")
-    id("com.github.spotbugs") version "6.0.16"
+    id("com.github.spotbugs") version "6.0.17"
     id("com.diffplug.spotless") version "6.25.0"
 }
 
