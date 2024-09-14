@@ -29,7 +29,7 @@ jobs:
 
       - name: Upload Linter Result
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Linter result
           path: linter-result.txt
