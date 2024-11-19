@@ -22,10 +22,10 @@ dependencies {
     implementation("com.squareup:javapoet:1.13.0")
     implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
 
-    compileOnly("org.projectlombok:lombok:1.18.34")
-    annotationProcessor("org.projectlombok:lombok:1.18.34")
-    testCompileOnly("org.projectlombok:lombok:1.18.34")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.34")
+    compileOnly("org.projectlombok:lombok:1.18.36")
+    annotationProcessor("org.projectlombok:lombok:1.18.36")
+    testCompileOnly("org.projectlombok:lombok:1.18.36")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.36")
 
     implementation("org.slf4j:slf4j-api:2.0.16")
 
