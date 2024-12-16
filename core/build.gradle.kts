@@ -41,7 +41,7 @@ dependencies {
 
     spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.13.0")
 
-    compileOnly("com.google.googlejavaformat:google-java-format:1.25.0")
+    compileOnly("com.google.googlejavaformat:google-java-format:1.25.2")
 
 }
 
