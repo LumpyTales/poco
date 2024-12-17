@@ -1,8 +1,8 @@
 name: Quality Assurance - Core
 run-name: Core - Quality assurance on '${{ github.actor }}' commit
 on:
-  schedule:
-    - cron:  '0 0 * * FRI' # every friday night
+#  schedule:
+#    - cron:  '0 0 * * FRI' # every friday night
   workflow_dispatch:
   push:
     paths:
