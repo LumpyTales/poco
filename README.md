@@ -150,7 +150,7 @@ Right now the following containers/wrappers are supported:
 - Map.class
 ```
 
-### Q2 - 2024
+### Q1 - 2025
 
 #### [Own Collector and Context Interface](https://github.com/LumpyTales/poco/issues/3)
 Currently, the collector-classes implement the standard interface "java.util.function.Function"
@@ -165,9 +165,9 @@ to this project to zero but keep full functionality!
 In "Q1 - 2024" we introduced support for additional container classes, but there must be 
 the possibility to inject your own container classes.
 
-### Q3 - 2024
+### Q2 - 2025
 
-### Q4 - 2024
+### Q3 - 2025
 
 ## Licensing
 
