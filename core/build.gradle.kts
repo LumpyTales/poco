@@ -35,7 +35,7 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.27.3")
 
     testImplementation("org.mockito:mockito-core:5.16.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.15.2")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.16.0")
 
     testImplementation("org.apache.commons:commons-lang3:3.17.0")
 
