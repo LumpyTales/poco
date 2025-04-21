@@ -39,7 +39,7 @@ dependencies {
 
     testImplementation("org.apache.commons:commons-lang3:3.17.0")
 
-    spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.13.0")
+    spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.14.0")
 
     compileOnly("com.google.googlejavaformat:google-java-format:1.26.0")
 
