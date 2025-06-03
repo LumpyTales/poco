@@ -3,7 +3,7 @@ plugins {
     jacoco
     id("com.gradle.plugin-publish") version "1.3.1"
     id("com.github.spotbugs") version "6.1.12"
-    id("com.diffplug.spotless") version "7.0.3"
+    id("com.diffplug.spotless") version "7.0.4"
 }
 
 java {
