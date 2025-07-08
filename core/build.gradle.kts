@@ -5,7 +5,7 @@ plugins {
     id("java-library")
     id("maven-publish")
     id("com.github.spotbugs") version "6.2.1"
-    id("com.diffplug.spotless") version "7.0.4"
+    id("com.diffplug.spotless") version "7.1.0"
 }
 
 java {
