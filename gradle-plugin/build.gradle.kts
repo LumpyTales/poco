@@ -2,7 +2,7 @@ plugins {
     pmd
     jacoco
     id("com.gradle.plugin-publish") version "1.3.1"
-    id("com.github.spotbugs") version "6.2.1"
+    id("com.github.spotbugs") version "6.4.2"
     id("com.diffplug.spotless") version "7.1.0"
 }
 
